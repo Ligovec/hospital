@@ -3191,9 +3191,9 @@ figure.hfig svg{width:100%!important;max-width:none!important;height:auto;displa
     applyPause();
   });
 
-  // ---------- высокая шапка только на главной ----------
+  // ---------- узкая шапка вне главной отключена 19.11.2026: выглядела обрезанной; шапка везде полная ----------
   function syncMode() {
-    var slim = !home || home.hidden;
+    var slim = false;
     if (mh.classList.contains("slim") !== slim) { mh.classList.toggle("slim", slim); petals.length = 0; seed(); }
   }
   if (home && window.MutationObserver) new MutationObserver(syncMode).observe(home, { attributes: true, attributeFilter: ["hidden"] });
