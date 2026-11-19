@@ -11,7 +11,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 /* Экзамен АиГ — общие стили для оглавления и страниц-разборов.
    Layout: колонка текста ≤760px; на широком экране слева липкое оглавление вопроса. */
@@ -403,69 +403,237 @@ dl.abbr dt,dl.abbr dd{min-width:0;overflow-wrap:anywhere}
 .dl-note{font-size:13px;color:var(--ink-3)}
 @media print{.dlrow{display:none}}
 
-/* Новогоднее оформление: гирлянда под панелью, снег, плашка в шапке главной.
-   Подключается флагом НОВЫЙ_ГОД в build_site.py; выключить — поставить False и пересобрать. */
+/* ================= Оформление «Сакура», 19.11.2026 =================
+   Шапка — весенний пейзаж (разметка в оформление.py, лепестки и режимы в сакура.js).
+   Ниже — тёплая бумажная палитра всего сайта, заголовки шрифтом Lora, карточки с мягкой тенью.
+   Цвета темы (акцент) у каждой темы свои и задаются в build_css, здесь не трогаются. */
+
 :root{
-  --ny-wire:#8a8c97; --ny-r:#d63c3c; --ny-g:#e0a21f; --ny-e:#2e9a58; --ny-b:#3a78d6;
-  --ny-glow:0; --snow:rgba(110,140,170,.55); --ny-ink:#b3302c; --ny-bg:#fdf0ef;
+  --bg:#fcf8f6; --paper:#fffdfc; --ink:#2b2330; --ink-2:#5d5462; --ink-3:#8c8390; --line:#efe6e7; --line-2:#e0d3d6;
+  --note-bg:#f8f0f1; --accent:#b2416f; --accent-bg:#fcebf2;
+  --f-head:"Lora",Georgia,"Times New Roman",serif;
+  --shadow:0 1px 2px rgba(80,40,55,.05),0 10px 28px -14px rgba(120,60,85,.22);
+  /* небо и пейзаж: день */
+  --sky1:#bcdcf0; --sky2:#e3eff4; --sky3:#fde3d6; --sun:#fff4d2; --sun-glow:rgba(255,226,160,.55); --cloud:rgba(255,255,255,.85);
+  --far1:#cad7e6; --far2:#aec0d6; --ridge:#8ea4c2; --pulse:#e4517e;
+  --grove:#7fae74; --hill:#9fcb8c; --hill2:#8dbc80; --road:#ddd5c6; --meadow:#b9dd9d; --meadow2:#acd590; --trail:#efdfc2; --tuft:#86b872;
+  --fl1:#ffffff; --fl2:#f5b9cf; --fl3:#ffe07c;
+  --wall:#ecd6b2; --wall-s:#d6bb93; --roof:#a2503f; --roof2:#8a4235; --chim:#8b5a49; --win:#bfe1f2; --frame:#ffffff; --door:#7b5338;
+  --sign:#ffffff; --cross:#d7354f; --smoke:#ffffff; --fence:#c9a77f; --ytree:#6fa564; --trunk-s:#7a5844;
+  --car:#ffffff; --car-g:#9ccbe6; --car-s:#d7354f; --car-l:#ffd56a; --wheel:#38323a;
+  --coat:#4b6c99; --scarf:#e2678f; --skin:#f1c8a7; --hair:#4b3427; --leg:#3b3442; --dog:#b88051; --dog-e:#8b5a37; --leash:#c13f62;
+  --bark:#5b3b3e; --b1:#fbd7e4; --b2:#f5b5cc; --b3:#e892b4; --b4:#fde3ed; --fw:#fff0f5; --core:#de6f96;
+  --petal1:#f7c3d5; --petal2:#f2a6c1; --petal3:#fbdde8; --petal4:#ea8db1;
+  --title:#3a2340; --title-glow:0 0 18px rgba(255,255,255,.95),0 0 40px rgba(255,255,255,.7);
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --ny-wire:#5d606c; --ny-r:#ff6b6b; --ny-g:#ffcc4d; --ny-e:#4fd68a; --ny-b:#6aa8ff;
-  --ny-glow:1; --snow:rgba(255,255,255,.78); --ny-ink:#ff8f86; --ny-bg:#3a1d1d;
-}}
+  --bg:#15131a; --paper:#1e1a23; --ink:#f0e9f1; --ink-2:#c3b8c6; --ink-3:#958a99; --line:#2e2834; --line-2:#3e3645;
+  --note-bg:#241f2a; --accent:#f08db6; --accent-bg:#3b2130;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px -14px rgba(0,0,0,.6);
+  --sky1:#10152d; --sky2:#28284a; --sky3:#583a5a; --sun:#f3ecd6; --sun-glow:rgba(243,236,214,.22); --cloud:rgba(150,150,190,.18);
+  --far1:#262c4a; --far2:#2f3759; --ridge:#7083b8; --pulse:#ff7ba6;
+  --grove:#183129; --hill:#1f3b35; --hill2:#1b332f; --road:#3a3944; --meadow:#25463a; --meadow2:#214036; --trail:#4a4450; --tuft:#2f5646;
+  --fl1:#cfd2e6; --fl2:#c48aa6; --fl3:#c9b46a;
+  --wall:#5d4c40; --wall-s:#4b3d33; --roof:#5c2e2b; --roof2:#4b2523; --chim:#4a3631; --win:#ffd27a; --frame:#a8977f; --door:#3a2a21;
+  --sign:#d9d3cc; --cross:#c2394f; --smoke:#8e8aa3; --fence:#5d4c3d; --ytree:#1f3d30; --trunk-s:#3d2c25;
+  --car:#c9cdd8; --car-g:#ffe7a0; --car-s:#b8394f; --car-l:#ffe08a; --wheel:#17151a;
+  --coat:#6c87b2; --scarf:#d16b8f; --skin:#d6a98a; --hair:#2c211b; --leg:#26222c; --dog:#8a6243; --dog-e:#5e3f2a; --leash:#c45373;
+  --bark:#3a2629; --b1:#d58aa9; --b2:#c2739a; --b3:#9f5680; --b4:#e7a9c2; --fw:#f1c6d7; --core:#8c3a60;
+  --petal1:#efb1c9; --petal2:#de96b5; --petal3:#f5cbdb; --petal4:#cf7ea2;
+  --title:#fbeef4; --title-glow:0 0 18px rgba(16,18,40,.9),0 0 40px rgba(16,18,40,.7);
+  color-scheme:dark}}
 :root[data-theme="dark"]{
-  --ny-wire:#5d606c; --ny-r:#ff6b6b; --ny-g:#ffcc4d; --ny-e:#4fd68a; --ny-b:#6aa8ff;
-  --ny-glow:1; --snow:rgba(255,255,255,.78); --ny-ink:#ff8f86; --ny-bg:#3a1d1d;
+  --bg:#15131a; --paper:#1e1a23; --ink:#f0e9f1; --ink-2:#c3b8c6; --ink-3:#958a99; --line:#2e2834; --line-2:#3e3645;
+  --note-bg:#241f2a; --accent:#f08db6; --accent-bg:#3b2130;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px -14px rgba(0,0,0,.6);
+  --sky1:#10152d; --sky2:#28284a; --sky3:#583a5a; --sun:#f3ecd6; --sun-glow:rgba(243,236,214,.22); --cloud:rgba(150,150,190,.18);
+  --far1:#262c4a; --far2:#2f3759; --ridge:#7083b8; --pulse:#ff7ba6;
+  --grove:#183129; --hill:#1f3b35; --hill2:#1b332f; --road:#3a3944; --meadow:#25463a; --meadow2:#214036; --trail:#4a4450; --tuft:#2f5646;
+  --fl1:#cfd2e6; --fl2:#c48aa6; --fl3:#c9b46a;
+  --wall:#5d4c40; --wall-s:#4b3d33; --roof:#5c2e2b; --roof2:#4b2523; --chim:#4a3631; --win:#ffd27a; --frame:#a8977f; --door:#3a2a21;
+  --sign:#d9d3cc; --cross:#c2394f; --smoke:#8e8aa3; --fence:#5d4c3d; --ytree:#1f3d30; --trunk-s:#3d2c25;
+  --car:#c9cdd8; --car-g:#ffe7a0; --car-s:#b8394f; --car-l:#ffe08a; --wheel:#17151a;
+  --coat:#6c87b2; --scarf:#d16b8f; --skin:#d6a98a; --hair:#2c211b; --leg:#26222c; --dog:#8a6243; --dog-e:#5e3f2a; --leash:#c45373;
+  --bark:#3a2629; --b1:#d58aa9; --b2:#c2739a; --b3:#9f5680; --b4:#e7a9c2; --fw:#f1c6d7; --core:#8c3a60;
+  --petal1:#efb1c9; --petal2:#de96b5; --petal3:#f5cbdb; --petal4:#cf7ea2;
+  --title:#fbeef4; --title-glow:0 0 18px rgba(16,18,40,.9),0 0 40px rgba(16,18,40,.7);
+  color-scheme:dark}
+body{background:var(--bg)}
+body::before{background:var(--sky1)}
+
+/* ---------- Шапка ---------- */
+.masthead{--sh:380px;position:relative;overflow:hidden;background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 45%,var(--sky3) 78%,var(--sky3) 100%)}
+.masthead.slim{--sh:132px}
+@media (max-width:760px){.masthead{--sh:250px}.masthead.slim{--sh:86px}}
+.masthead .bar{z-index:5;background:color-mix(in srgb,var(--paper) 55%,transparent);-webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2);border-bottom:1px solid color-mix(in srgb,var(--paper) 50%,transparent)}
+.brand .ic{fill:var(--accent);stroke:none;color:var(--accent)}
+.bar-nav a:hover,.bar-nav a.on{background:color-mix(in srgb,var(--paper) 75%,transparent)}
+.search input{background:color-mix(in srgb,var(--paper) 80%,transparent);border-color:color-mix(in srgb,var(--line-2) 80%,transparent);border-radius:999px;padding-inline:16px}
+.scene{position:relative;height:var(--sh);transition:height .35s ease}
+.land{position:absolute;left:50%;bottom:0;width:max(100%,calc(var(--sh) * 4));height:auto;transform:translateX(-50%);display:block}
+.masthead.slim .land{width:max(100%,600px)}
+.tree{position:absolute;left:0;bottom:0;height:min(calc(var(--sh) + 46px),40vw);width:auto;overflow:visible;z-index:2}
+@media (max-width:760px){.tree{height:calc(var(--sh) * .92)}}
+.masthead.slim .tree{height:250px;bottom:auto;top:-62px}
+@media (max-width:760px){.masthead.slim .tree{height:190px;top:-52px}}
+.petals{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
+.sun{position:absolute;left:46%;top:12%;width:58px;height:58px;border-radius:50%;background:var(--sun);box-shadow:0 0 0 14px var(--sun-glow),0 0 60px 26px var(--sun-glow)}
+.masthead.slim .sun{display:none}
+@media (max-width:760px){.sun{left:auto;right:12%;top:10%;width:42px;height:42px}}
+.cloud{position:absolute;height:22px;border-radius:999px;background:var(--cloud);animation:drift linear infinite}
+.cloud::before,.cloud::after{content:"";position:absolute;bottom:6px;border-radius:50%;background:inherit}
+.cloud::before{left:18%;width:44%;aspect-ratio:1}
+.cloud::after{left:48%;width:32%;aspect-ratio:1}
+.cloud.c1{top:18%;width:130px;animation-duration:150s;animation-delay:-40s}
+.cloud.c2{top:34%;width:90px;animation-duration:190s;animation-delay:-120s;opacity:.8}
+.cloud.c3{top:8%;width:160px;animation-duration:230s;animation-delay:-10s;opacity:.7}
+.masthead.slim .cloud{display:none}
+@keyframes drift{from{left:-180px}to{left:105%}}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .scene::before{content:"";position:absolute;inset:0;opacity:.8;background-image:radial-gradient(1.2px 1.2px at 12% 18%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 27% 8%,#fff 50%,transparent 51%),radial-gradient(1.3px 1.3px at 58% 22%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 71% 9%,#fff 50%,transparent 51%),radial-gradient(1.4px 1.4px at 83% 30%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 93% 14%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 38% 32%,#fff 50%,transparent 51%),radial-gradient(1.2px 1.2px at 65% 40%,#fff 50%,transparent 51%)}}
+:root[data-theme="dark"] .scene::before{content:"";position:absolute;inset:0;opacity:.8;background-image:radial-gradient(1.2px 1.2px at 12% 18%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 27% 8%,#fff 50%,transparent 51%),radial-gradient(1.3px 1.3px at 58% 22%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 71% 9%,#fff 50%,transparent 51%),radial-gradient(1.4px 1.4px at 83% 30%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 93% 14%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 38% 32%,#fff 50%,transparent 51%),radial-gradient(1.2px 1.2px at 65% 40%,#fff 50%,transparent 51%)}
+
+/* пейзаж */
+.land .far1{fill:var(--far1)} .land .far2{fill:var(--far2)}
+.land .ridge{fill:none;stroke:var(--ridge);stroke-width:1.4;stroke-linejoin:round;opacity:.8}
+.land .pulse{fill:none;stroke:var(--pulse);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:34 1400;stroke-dashoffset:40;filter:drop-shadow(0 0 4px var(--pulse));animation:beat 9s linear infinite}
+@keyframes beat{from{stroke-dashoffset:40}to{stroke-dashoffset:-1000}}
+.land .grove ellipse{fill:var(--grove)} .land .hill{fill:var(--hill)} .land .hill2{fill:var(--hill2)}
+.land .road{fill:none;stroke:var(--road);stroke-width:9}
+.land .meadow{fill:var(--meadow)} .land .meadow2{fill:var(--meadow2)} .land .trail{fill:var(--trail)}
+.land .tufts path{stroke:var(--tuft);stroke-width:1.3;stroke-linecap:round;fill:none}
+.land .fl1{fill:var(--fl1)} .land .fl2{fill:var(--fl2)} .land .fl3{fill:var(--fl3)}
+.land .ytree circle{fill:var(--ytree)} .land .trunk-s{fill:var(--trunk-s)}
+.land .wall{fill:var(--wall)} .land .wall-s{fill:var(--wall-s)} .land .roof{fill:var(--roof)} .land .roof2{fill:var(--roof2)}
+.land .chim{fill:var(--chim)} .land .win{fill:var(--win)} .land .frame{stroke:var(--frame);stroke-width:2;fill:none}
+.land .door{fill:var(--door)} .land .knob{fill:var(--frame)} .land .step{fill:var(--wall-s)}
+.land .sign{fill:var(--sign)} .land .cross{fill:var(--cross)}
+.land .fence path{stroke:var(--fence);stroke-width:2;stroke-linecap:round;fill:none}
+.land .puff{fill:var(--smoke);opacity:0;transform-box:fill-box;transform-origin:center;animation:smoke 7s ease-out infinite}
+.land .puff.p2{animation-delay:-2.3s} .land .puff.p3{animation-delay:-4.6s}
+@keyframes smoke{0%{transform:translate(0,0) scale(.5);opacity:0}15%{opacity:.6}100%{transform:translate(22px,-46px) scale(1.9);opacity:0}}
+.land .car{animation:drive 38s linear infinite}
+.land .car-b{fill:var(--car)} .land .car-g{fill:var(--car-g)} .land .car-s{fill:var(--car-s)} .land .car-l{fill:var(--car-l)} .land .wheel{fill:var(--wheel)}
+@keyframes drive{0%{transform:translateX(1700px)}60%{transform:translateX(-120px)}100%{transform:translateX(-120px)}}
+.land .walker{animation:stroll 95s linear infinite;animation-delay:-38s}
+@keyframes stroll{from{transform:translateX(-90px)}to{transform:translateX(1700px)}}
+.land .coat{fill:var(--coat)} .land .scarf{fill:var(--scarf)} .land .skin{fill:var(--skin)} .land .hair{fill:var(--hair)}
+.land .leg,.land .arm{stroke:var(--leg);stroke-width:3;stroke-linecap:round}
+.land .arm{stroke:var(--coat)}
+.land .leash{fill:none;stroke:var(--leash);stroke-width:1.1}
+.land .dog-b{fill:var(--dog)} .land .dog-e{fill:var(--dog-e)}
+.land .dlg{stroke:var(--dog-e);stroke-width:2.2;stroke-linecap:round}
+.land .tail{fill:none;stroke:var(--dog);stroke-width:2;stroke-linecap:round;transform-box:fill-box;transform-origin:100% 100%;animation:wag .35s ease-in-out infinite alternate}
+.land .lg,.land .dlg{transform-box:fill-box;transform-origin:50% 0;animation:swing .55s ease-in-out infinite alternate}
+.land .lg.b,.land .dlg.b{animation-direction:alternate-reverse}
+.land .dlg{animation-duration:.3s}
+.land .bob{animation:bob .55s ease-in-out infinite alternate}
+.land .bob.d{animation-duration:.3s}
+@keyframes swing{from{transform:rotate(22deg)}to{transform:rotate(-22deg)}}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-1px)}}
+@keyframes wag{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}
+
+/* сакура */
+.tree .br{fill:none;stroke:var(--bark);stroke-linecap:round}
+.tree .tw{fill:none;stroke:var(--bark);stroke-width:2.4;stroke-linecap:round}
+.tree .root{fill:var(--bark)}
+.tree .b1{fill:var(--b1)} .tree .b2{fill:var(--b2)} .tree .b3{fill:var(--b3)} .tree .b4{fill:var(--b4)}
+.tree .shade{opacity:.9}
+.tree .fw ellipse{fill:var(--fw)} .tree .core{fill:var(--core)}
+.tree .crown{transform-box:view-box;transform-origin:110px 446px;animation:sway 9s ease-in-out infinite alternate}
+@keyframes sway{from{transform:rotate(-.6deg)}to{transform:rotate(.7deg)}}
+
+/* название на небе */
+.scene-title{position:absolute;z-index:4;top:calc(var(--bar) + 44px);right:max(24px,5vw);width:min(560px,46%);text-align:right;color:var(--title)}
+.scene-title .eyebrow{color:var(--title);opacity:.75;text-shadow:var(--title-glow)}
+.scene-title h1{font-family:var(--f-head);font-weight:700;font-size:clamp(38px,4.6vw,60px);line-height:1.04;margin:10px 0 10px;letter-spacing:-.01em;color:var(--title);text-shadow:var(--title-glow)}
+.motto{font-family:var(--f-head);font-style:italic;font-weight:500;font-size:clamp(17px,1.7vw,22px);margin:0;color:var(--title);text-shadow:var(--title-glow)}
+.motto::before,.motto::after{content:"❀";font-style:normal;color:var(--accent);margin:0 .45em;font-size:.8em;vertical-align:.08em}
+.masthead.slim .scene-title{display:none}
+@media (max-width:760px){
+  .scene-title{position:relative;top:auto;right:auto;width:auto;text-align:left;background:var(--bg);padding:20px 16px 4px;padding-left:max(16px,env(safe-area-inset-left,0px))}
+  .scene-title .eyebrow,.scene-title h1,.motto{color:var(--ink);text-shadow:none}
+  .scene-title h1{font-size:34px;margin:8px 0}
+  .motto::before{display:none}
 }
-[id]{scroll-margin-top:16px}
 
-/* гирлянда висит под панелью и не мешает нажатиям */
-.bar{position:relative}
-.garland{position:absolute;left:0;right:0;top:100%;height:24px;pointer-events:none;overflow:hidden}
-.garland svg{display:block;width:100%;height:24px}
-.garland .w{fill:none;stroke:var(--ny-wire);stroke-width:1.2}
-.garland .cap{fill:var(--ny-wire)}
-.garland .b{animation:ny-tw 2.8s ease-in-out infinite}
-.garland .c0{fill:var(--ny-r)} .garland .c1{fill:var(--ny-g)} .garland .c2{fill:var(--ny-e)} .garland .c3{fill:var(--ny-b)}
-.garland .d1{animation-delay:-.7s} .garland .d2{animation-delay:-1.4s} .garland .d3{animation-delay:-2.1s}
-@keyframes ny-tw{0%,100%{opacity:1}50%{opacity:.45}}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .garland .b{filter:drop-shadow(0 0 3px currentColor)}}
-:root[data-theme="dark"] .garland .b{filter:drop-shadow(0 0 3px currentColor)}
-.garland .c0{color:var(--ny-r)} .garland .c1{color:var(--ny-g)} .garland .c2{color:var(--ny-e)} .garland .c3{color:var(--ny-b)}
+/* пауза анимации */
+.scene-pause{position:absolute;z-index:4;right:max(12px,env(safe-area-inset-right,0px));bottom:12px;display:grid;place-items:center;width:34px;height:34px;padding:0;border-radius:50%;border:1px solid color-mix(in srgb,var(--paper) 60%,transparent);background:color-mix(in srgb,var(--paper) 60%,transparent);color:var(--ink);cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.scene-pause svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.scene-pause .i-play{display:none;fill:currentColor;stroke-width:1.5}
+.masthead.paused .scene-pause .i-pause{display:none}
+.masthead.paused .scene-pause .i-play{display:block}
+.scene-pause:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:760px){.masthead:not(.slim) .scene-pause{bottom:auto;top:calc(var(--bar) + var(--sh) - 46px)}}
+.masthead.paused .scene *,.masthead.paused .scene *::before,.masthead.paused .scene *::after{animation-play-state:paused!important}
+@media print{.masthead .scene,.petals,.scene-pause{display:none}}
 
-/* снег: холст под панелью, поверх текста, без нажатий */
-.ny-snow{position:fixed;inset:0;width:100%;height:100%;z-index:4;pointer-events:none}
+/* ---------- Главная: под шапкой ---------- */
+.intro-in{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:22px;padding-block:28px 6px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media (min-width:980px){.intro-in{grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:36px;align-items:start;padding-top:34px}}
+@media (max-width:760px){.intro-in{padding-top:10px}}
+.intro .lead{font-size:17px;line-height:1.6}
+.intro .howto{margin:18px 0 0;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.howto a{border-radius:16px;border-color:var(--line);box-shadow:var(--shadow);transition:transform .15s,border-color .15s}
+.howto a:hover{transform:translateY(-2px)}
+.xmap{border-radius:18px;border-color:var(--line);box-shadow:var(--shadow);padding:16px 18px 14px}
+.xhead{font-family:var(--f-head);font-size:18px}
+.xc{border-radius:4px}
 
-/* кнопка снега в панели */
-.ny-btn{font:inherit;font-size:13px;line-height:1;display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid var(--line-2);background:var(--paper);color:var(--ink-2);cursor:pointer;white-space:nowrap}
-.ny-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round}
-.ny-btn[aria-pressed="true"]{color:var(--ny-b);border-color:var(--ny-b)}
-.ny-btn:hover{border-color:var(--ny-b)}
-@media (max-width:760px){.ny-btn{margin-left:auto}.ny-btn span{display:none}}
+h1,h2.qhead,.thead h1,.tt2,h2.grp{font-family:var(--f-head)}
+h1{letter-spacing:-.005em}
+h2.grp{font-size:21px;font-weight:600;letter-spacing:0;color:var(--ink);margin:34px 0 12px;display:flex;align-items:center;gap:10px}
+h2.grp::before{content:"";width:18px;height:18px;flex:none;background:var(--accent);-webkit-mask:var(--fl) center/contain no-repeat;mask:var(--fl) center/contain no-repeat;--fl:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23000'%3E%3Cpath id='p' d='M12 10.2c-1.4-2.6-1.6-5.2 0-7.2l.9 1.4.9-1.3c1 2.3.3 4.7-1.8 7.1z'/%3E%3Cuse href='%23p' transform='rotate(72 12 12)'/%3E%3Cuse href='%23p' transform='rotate(144 12 12)'/%3E%3Cuse href='%23p' transform='rotate(216 12 12)'/%3E%3Cuse href='%23p' transform='rotate(288 12 12)'/%3E%3C/g%3E%3C/svg%3E")}
+.tlist{gap:14px}
+.tcard{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px 20px;box-shadow:var(--shadow)}
+.tcard:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+.tt2{font-size:22px;font-weight:600}
+.ticon{border-radius:14px}
+.hblocks a{border-radius:999px}
+.foot{border-top-color:var(--line)}
 
-/* плашка на главной */
-.ny-badge{display:inline-flex;align-items:center;gap:8px;margin:0 0 12px;padding:5px 12px 5px 8px;border-radius:999px;background:var(--ny-bg);color:var(--ny-ink);font-size:13.5px;font-weight:500;max-width:100%}
-.ny-badge svg{width:18px;height:18px;flex:none}
-.ny-badge .t1{fill:var(--ny-e)} .ny-badge .t2{fill:var(--ny-g)} .ny-badge .t3{fill:var(--ny-r)}
-
-@media (prefers-reduced-motion: reduce){.garland .b{animation:none}}
-@media print{.garland,.ny-snow,.ny-btn,.ny-badge{display:none!important}}
+/* ---------- Страницы тем и остальные разделы ---------- */
+.thead h1{font-weight:700}
+h2.qhead{font-weight:600}
+.tbl{border-radius:14px}
+.note{border-radius:14px}
+figure{border-radius:16px}
+.card{border-radius:16px;box-shadow:var(--shadow)}
+.blknext,.dl,.cb button,#ask-send,.filters button{border-radius:999px}
+.blknext{border-radius:14px}
+details.about{border-radius:14px}
+.totop{box-shadow:var(--shadow)}
+@media (min-width:1080px){nav.toc{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px 12px;box-shadow:var(--shadow)}}
 
 </style>
+<div class="masthead" id="masthead">
 <header class="bar">
   <div class="bar-in">
-    <a class="brand" href="#home"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.500 12h4.500l2-5 3.500 10 2.500-7 1.200 2h5.800"/></svg>Госпитальная терапия</a>
+    <a class="brand" href="#home"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 10.2c-1.4-2.6-1.6-5.2 0-7.2l.9 1.4.9-1.3c1 2.3.3 4.7-1.8 7.1z"/><path d="M12 10.2c-1.4-2.6-1.6-5.2 0-7.2l.9 1.4.9-1.3c1 2.3.3 4.7-1.8 7.1z" transform="rotate(72 12 12)"/><path d="M12 10.2c-1.4-2.6-1.6-5.2 0-7.2l.9 1.4.9-1.3c1 2.3.3 4.7-1.8 7.1z" transform="rotate(144 12 12)"/><path d="M12 10.2c-1.4-2.6-1.6-5.2 0-7.2l.9 1.4.9-1.3c1 2.3.3 4.7-1.8 7.1z" transform="rotate(216 12 12)"/><path d="M12 10.2c-1.4-2.6-1.6-5.2 0-7.2l.9 1.4.9-1.3c1 2.3.3 4.7-1.8 7.1z" transform="rotate(288 12 12)"/><circle cx="12" cy="12" r="1.3"/></svg>Госпитальная терапия</a>
     <nav class="bar-nav" aria-label="Разделы сайта"><a href="#home" data-nav="home">Темы</a><a href="#questions" data-nav="questions">Вопросы</a><a href="#check" data-nav="check">Проверить себя</a></nav>
     <div class="search"><label class="sr" for="q">Поиск по всем темам</label><input id="q" type="search" placeholder="Поиск: например, аденозин" autocomplete="off"></div>
   </div>
   <div class="rprog" id="rprog" aria-hidden="true"></div>
 </header>
+<div class="scene" aria-hidden="true">
+  <div class="sun"></div>
+  <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+  <svg class="land" viewBox="0 0 1600 400" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><path class="far1" d="M0 236 C120 214 230 222 340 232 S560 208 700 222 S960 236 1080 214 S1360 206 1480 226 S1580 230 1600 228 V400 H0Z"/><path class="far2" d="M-60 250 h60 q20 -13 40 0 h25 l8 7 l14 -100 l14 115 l10 -22 h30 q35 -32 70 0 h149 h60 q20 -13 40 0 h25 l8 7 l14 -100 l14 115 l10 -22 h30 q35 -32 70 0 h149 h60 q20 -13 40 0 h25 l8 7 l14 -100 l14 115 l10 -22 h30 q35 -32 70 0 h149 h60 q20 -13 40 0 h25 l8 7 l14 -100 l14 115 l10 -22 h30 q35 -32 70 0 h149 V400 H-60Z"/><path class="ridge" d="M-60 250 h60 q20 -13 40 0 h25 l8 7 l14 -100 l14 115 l10 -22 h30 q35 -32 70 0 h149 h60 q20 -13 40 0 h25 l8 7 l14 -100 l14 115 l10 -22 h30 q35 -32 70 0 h149 h60 q20 -13 40 0 h25 l8 7 l14 -100 l14 115 l10 -22 h30 q35 -32 70 0 h149 h60 q20 -13 40 0 h25 l8 7 l14 -100 l14 115 l10 -22 h30 q35 -32 70 0 h149" pathLength="1000"/><path class="pulse" d="M-60 250 h60 q20 -13 40 0 h25 l8 7 l14 -100 l14 115 l10 -22 h30 q35 -32 70 0 h149 h60 q20 -13 40 0 h25 l8 7 l14 -100 l14 115 l10 -22 h30 q35 -32 70 0 h149 h60 q20 -13 40 0 h25 l8 7 l14 -100 l14 115 l10 -22 h30 q35 -32 70 0 h149 h60 q20 -13 40 0 h25 l8 7 l14 -100 l14 115 l10 -22 h30 q35 -32 70 0 h149" pathLength="1000"/><path class="hill2" d="M0 286 C160 262 330 266 520 282 S880 296 1060 278 S1420 262 1600 280 V400 H0Z"/><g class="grove"><ellipse cx="60" cy="275.2" rx="9.8" ry="12.2"/><ellipse cx="95" cy="278.5" rx="9.4" ry="11.7"/><ellipse cx="130" cy="277.4" rx="10.8" ry="13.5"/><ellipse cx="300" cy="272.6" rx="11.5" ry="14.4"/><ellipse cx="330" cy="272.4" rx="11.2" ry="14"/><ellipse cx="1180" cy="272.7" rx="9.5" ry="11.8"/><ellipse cx="1215" cy="276.2" rx="13.1" ry="16.4"/><ellipse cx="1250" cy="273.2" rx="10.1" ry="12.6"/><ellipse cx="1290" cy="278.3" rx="13.7" ry="17.2"/><ellipse cx="1460" cy="277.8" rx="11" ry="13.7"/><ellipse cx="1500" cy="281.8" rx="9.2" ry="11.5"/></g><path class="hill" d="M0 298 C200 286 420 290 640 298 S1000 304 1240 294 S1500 290 1600 296 V400 H0Z"/><path class="road" d="M-20 304 C400 299 800 307 1200 302 S1560 303 1620 304"/><g class="car"><g transform="translate(0 306)"><rect class="car-b" x="0" y="-15" width="40" height="11" rx="3"/><path class="car-b" d="M2 -15 L8 -22 H24 V-15Z"/><path class="car-g" d="M5 -15 L9 -20 H15 V-15Z"/><rect class="car-g" x="17" y="-20" width="6" height="5"/><rect class="car-s" x="0" y="-9" width="40" height="2"/><path class="car-s" d="M30 -14 h2 v-2 h2 v2 h2 v2 h-2 v2 h-2 v-2 h-2z"/><circle class="car-l" cx="1" cy="-8" r="1.6"/><circle class="wheel" cx="9" cy="-3.5" r="3.6"/><circle class="wheel" cx="31" cy="-3.5" r="3.6"/></g></g><path class="meadow" d="M0 314 C300 302 600 320 900 313 S1400 306 1600 316 V400 H0Z"/><path class="meadow2" d="M0 352 C260 342 520 356 800 350 S1300 342 1600 352 V400 H0Z"/><path class="trail" d="M716 400 C760 372 868 362 878 324 L898 324 C914 366 830 380 806 400Z"/><g class="ytree"><rect class="trunk-s" x="986" y="268" width="6" height="48" rx="2"/><circle cx="989" cy="262" r="26"/><circle cx="972" cy="276" r="16"/><circle cx="1006" cy="278" r="15"/></g><g class="ytree"><rect class="trunk-s" x="796" y="282" width="5" height="34" rx="2"/><circle cx="798" cy="276" r="18"/><circle cx="786" cy="286" r="11"/></g><g class="house"><g class="smoke"><circle class="puff" cx="936" cy="222" r="5"/><circle class="puff p2" cx="936" cy="222" r="5"/><circle class="puff p3" cx="936" cy="222" r="5"/></g><rect class="chim" x="929" y="226" width="12" height="26"/><rect class="wall" x="840" y="262" width="112" height="58"/><rect class="wall-s" x="840" y="262" width="112" height="7"/><path class="roof" d="M826 266 L896 220 L966 266Z"/><path class="roof2" d="M826 266 L896 220 L896 266Z"/><rect class="win" x="852" y="280" width="20" height="18" rx="1"/><rect class="win" x="920" y="280" width="20" height="18" rx="1"/><path class="frame" d="M862 280 V298 M852 286 H872 M930 280 V298 M920 286 H940"/><rect class="sign" x="879" y="266" width="34" height="13" rx="2"/><path class="cross" d="M894.3 268 h3.4 v2.8 h2.8 v3.4 h-2.8 v2.8 h-3.4 v-2.8 h-2.8 v-3.4 h2.8z"/><rect class="door" x="886" y="290" width="20" height="30" rx="1.5"/><circle class="knob" cx="902" cy="306" r="1.2"/><rect class="step" x="880" y="319" width="32" height="4" rx="1"/></g><g class="fence"><path d="M740 314 H830 M740 321 H830"/><path d="M743 324 V309"/><path d="M754 324 V309"/><path d="M765 324 V309"/><path d="M776 324 V309"/><path d="M787 324 V309"/><path d="M798 324 V309"/><path d="M809 324 V309"/><path d="M820 324 V309"/><path d="M962 314 H1060 M962 321 H1060"/><path d="M965 324 V309"/><path d="M976 324 V309"/><path d="M987 324 V309"/><path d="M998 324 V309"/><path d="M1009 324 V309"/><path d="M1020 324 V309"/><path d="M1031 324 V309"/><path d="M1042 324 V309"/><path d="M1053 324 V309"/></g><g class="tufts"><path d="M290.5 379.4 l-3 -7 M290.5 379.4 l0 -9 M290.5 379.4 l3 -7"/><path d="M1311.6 386.6 l-3 -7 M1311.6 386.6 l0 -9 M1311.6 386.6 l3 -7"/><path d="M1081.6 393.9 l-3 -7 M1081.6 393.9 l0 -9 M1081.6 393.9 l3 -7"/><path d="M649.5 362.8 l-3 -7 M649.5 362.8 l0 -9 M649.5 362.8 l3 -7"/><path d="M823.7 359.6 l-3 -7 M823.7 359.6 l0 -9 M823.7 359.6 l3 -7"/><path d="M523.3 343.2 l-3 -7 M523.3 343.2 l0 -9 M523.3 343.2 l3 -7"/><path d="M1279.3 335.9 l-3 -7 M1279.3 335.9 l0 -9 M1279.3 335.9 l3 -7"/><path d="M1432.5 342.4 l-3 -7 M1432.5 342.4 l0 -9 M1432.5 342.4 l3 -7"/><path d="M26.9 328.7 l-3 -7 M26.9 328.7 l0 -9 M26.9 328.7 l3 -7"/><path d="M416.9 368.2 l-3 -7 M416.9 368.2 l0 -9 M416.9 368.2 l3 -7"/><path d="M355.9 342.1 l-3 -7 M355.9 342.1 l0 -9 M355.9 342.1 l3 -7"/><path d="M194.7 322.9 l-3 -7 M194.7 322.9 l0 -9 M194.7 322.9 l3 -7"/><path d="M1590.9 353.7 l-3 -7 M1590.9 353.7 l0 -9 M1590.9 353.7 l3 -7"/><path d="M1464.7 369.2 l-3 -7 M1464.7 369.2 l0 -9 M1464.7 369.2 l3 -7"/><path d="M69.1 375.9 l-3 -7 M69.1 375.9 l0 -9 M69.1 375.9 l3 -7"/><path d="M1501 395.7 l-3 -7 M1501 395.7 l0 -9 M1501 395.7 l3 -7"/><path d="M419 335.8 l-3 -7 M419 335.8 l0 -9 M419 335.8 l3 -7"/><path d="M1491.6 369.8 l-3 -7 M1491.6 369.8 l0 -9 M1491.6 369.8 l3 -7"/><path d="M849.7 337.6 l-3 -7 M849.7 337.6 l0 -9 M849.7 337.6 l3 -7"/><path d="M713.1 373.1 l-3 -7 M713.1 373.1 l0 -9 M713.1 373.1 l3 -7"/><path d="M432.8 383.1 l-3 -7 M432.8 383.1 l0 -9 M432.8 383.1 l3 -7"/><path d="M1591.2 324.8 l-3 -7 M1591.2 324.8 l0 -9 M1591.2 324.8 l3 -7"/><path d="M29.5 360.4 l-3 -7 M29.5 360.4 l0 -9 M29.5 360.4 l3 -7"/><path d="M1564.9 361.1 l-3 -7 M1564.9 361.1 l0 -9 M1564.9 361.1 l3 -7"/><path d="M393.1 356 l-3 -7 M393.1 356 l0 -9 M393.1 356 l3 -7"/><path d="M1053.3 371.4 l-3 -7 M1053.3 371.4 l0 -9 M1053.3 371.4 l3 -7"/><path d="M1050.4 363.5 l-3 -7 M1050.4 363.5 l0 -9 M1050.4 363.5 l3 -7"/><path d="M1422 395.7 l-3 -7 M1422 395.7 l0 -9 M1422 395.7 l3 -7"/><path d="M492.5 338.4 l-3 -7 M492.5 338.4 l0 -9 M492.5 338.4 l3 -7"/><path d="M367.3 337.1 l-3 -7 M367.3 337.1 l0 -9 M367.3 337.1 l3 -7"/><path d="M1411.1 377.4 l-3 -7 M1411.1 377.4 l0 -9 M1411.1 377.4 l3 -7"/><path d="M223.6 397.2 l-3 -7 M223.6 397.2 l0 -9 M223.6 397.2 l3 -7"/><path d="M1571 385.6 l-3 -7 M1571 385.6 l0 -9 M1571 385.6 l3 -7"/><path d="M22.8 369.5 l-3 -7 M22.8 369.5 l0 -9 M22.8 369.5 l3 -7"/><path d="M1407.8 354.7 l-3 -7 M1407.8 354.7 l0 -9 M1407.8 354.7 l3 -7"/><path d="M88.6 372.6 l-3 -7 M88.6 372.6 l0 -9 M88.6 372.6 l3 -7"/><path d="M609.4 360.5 l-3 -7 M609.4 360.5 l0 -9 M609.4 360.5 l3 -7"/><path d="M1553.5 367.5 l-3 -7 M1553.5 367.5 l0 -9 M1553.5 367.5 l3 -7"/><path d="M1108.3 325.4 l-3 -7 M1108.3 325.4 l0 -9 M1108.3 325.4 l3 -7"/><path d="M296.6 342.4 l-3 -7 M296.6 342.4 l0 -9 M296.6 342.4 l3 -7"/><path d="M5.8 349.7 l-3 -7 M5.8 349.7 l0 -9 M5.8 349.7 l3 -7"/><path d="M526.3 396.9 l-3 -7 M526.3 396.9 l0 -9 M526.3 396.9 l3 -7"/><path d="M517.7 324.6 l-3 -7 M517.7 324.6 l0 -9 M517.7 324.6 l3 -7"/><path d="M1411.8 338.6 l-3 -7 M1411.8 338.6 l0 -9 M1411.8 338.6 l3 -7"/><path d="M292.7 347.5 l-3 -7 M292.7 347.5 l0 -9 M292.7 347.5 l3 -7"/><path d="M134.2 343.2 l-3 -7 M134.2 343.2 l0 -9 M134.2 343.2 l3 -7"/><path d="M1049.6 340.9 l-3 -7 M1049.6 340.9 l0 -9 M1049.6 340.9 l3 -7"/><path d="M1242 328.9 l-3 -7 M1242 328.9 l0 -9 M1242 328.9 l3 -7"/><path d="M1307.3 332.9 l-3 -7 M1307.3 332.9 l0 -9 M1307.3 332.9 l3 -7"/><path d="M938.9 351.9 l-3 -7 M938.9 351.9 l0 -9 M938.9 351.9 l3 -7"/><path d="M479.4 369.9 l-3 -7 M479.4 369.9 l0 -9 M479.4 369.9 l3 -7"/><path d="M135.2 394.8 l-3 -7 M135.2 394.8 l0 -9 M135.2 394.8 l3 -7"/><path d="M1365.2 333.8 l-3 -7 M1365.2 333.8 l0 -9 M1365.2 333.8 l3 -7"/><path d="M1428.5 381.6 l-3 -7 M1428.5 381.6 l0 -9 M1428.5 381.6 l3 -7"/><path d="M954.5 380.1 l-3 -7 M954.5 380.1 l0 -9 M954.5 380.1 l3 -7"/><path d="M1153.1 359.6 l-3 -7 M1153.1 359.6 l0 -9 M1153.1 359.6 l3 -7"/><path d="M454.7 369 l-3 -7 M454.7 369 l0 -9 M454.7 369 l3 -7"/><path d="M231.6 384.7 l-3 -7 M231.6 384.7 l0 -9 M231.6 384.7 l3 -7"/><path d="M1144 361 l-3 -7 M1144 361 l0 -9 M1144 361 l3 -7"/><path d="M686.8 375.3 l-3 -7 M686.8 375.3 l0 -9 M686.8 375.3 l3 -7"/><path d="M808.9 391.2 l-3 -7 M808.9 391.2 l0 -9 M808.9 391.2 l3 -7"/><path d="M1204.6 365.2 l-3 -7 M1204.6 365.2 l0 -9 M1204.6 365.2 l3 -7"/><path d="M1300.6 323.2 l-3 -7 M1300.6 323.2 l0 -9 M1300.6 323.2 l3 -7"/><path d="M1098.4 382.6 l-3 -7 M1098.4 382.6 l0 -9 M1098.4 382.6 l3 -7"/><path d="M1137.9 394.7 l-3 -7 M1137.9 394.7 l0 -9 M1137.9 394.7 l3 -7"/><path d="M1028.6 328.5 l-3 -7 M1028.6 328.5 l0 -9 M1028.6 328.5 l3 -7"/><path d="M67 370.4 l-3 -7 M67 370.4 l0 -9 M67 370.4 l3 -7"/><path d="M1535.2 350.6 l-3 -7 M1535.2 350.6 l0 -9 M1535.2 350.6 l3 -7"/><path d="M722.2 325.9 l-3 -7 M722.2 325.9 l0 -9 M722.2 325.9 l3 -7"/><path d="M30.1 362.4 l-3 -7 M30.1 362.4 l0 -9 M30.1 362.4 l3 -7"/></g><g class="flowers"><circle class="fl1" cx="1373.5" cy="348.3" r="2"/><circle class="fl3" cx="913.5" cy="367.2" r="1.6"/><circle class="fl2" cx="930.6" cy="372.7" r="1.5"/><circle class="fl3" cx="1139.4" cy="367.5" r="1.6"/><circle class="fl2" cx="1088.6" cy="357.9" r="2"/><circle class="fl1" cx="1477.5" cy="353.3" r="2.4"/><circle class="fl3" cx="1118.4" cy="345.1" r="1.8"/><circle class="fl1" cx="117.1" cy="363.8" r="2.3"/><circle class="fl1" cx="243.2" cy="362.2" r="2.6"/><circle class="fl2" cx="124.2" cy="367.1" r="1.8"/><circle class="fl2" cx="560.3" cy="362.8" r="1.5"/><circle class="fl3" cx="149.8" cy="346.9" r="2.2"/><circle class="fl3" cx="97.1" cy="377.1" r="2.1"/><circle class="fl3" cx="1090" cy="359.2" r="1.9"/><circle class="fl2" cx="1069.8" cy="329.6" r="1.8"/><circle class="fl1" cx="977.5" cy="362.6" r="2.3"/><circle class="fl2" cx="206.9" cy="345.3" r="2.5"/><circle class="fl1" cx="642.6" cy="347.4" r="2.4"/><circle class="fl2" cx="1382.4" cy="347.5" r="2.6"/><circle class="fl1" cx="1092.4" cy="354.6" r="1.6"/><circle class="fl1" cx="281.9" cy="344.2" r="1.4"/><circle class="fl2" cx="1329.7" cy="340.8" r="1.4"/><circle class="fl3" cx="670.3" cy="353.8" r="1.8"/><circle class="fl3" cx="200.8" cy="388.1" r="2.2"/><circle class="fl3" cx="1183.7" cy="360" r="2.4"/><circle class="fl1" cx="627.8" cy="355.9" r="2"/><circle class="fl1" cx="640.7" cy="341.3" r="1.9"/><circle class="fl1" cx="175.9" cy="370.1" r="1.4"/><circle class="fl2" cx="242" cy="335.1" r="2.1"/><circle class="fl2" cx="112.5" cy="342.6" r="1.6"/><circle class="fl2" cx="403.6" cy="352.3" r="2"/><circle class="fl2" cx="184.6" cy="362.2" r="2"/><circle class="fl3" cx="499" cy="338.1" r="1.8"/><circle class="fl1" cx="423.6" cy="386" r="2"/><circle class="fl2" cx="328.3" cy="394.6" r="1.6"/><circle class="fl3" cx="869.1" cy="329.9" r="1.8"/><circle class="fl2" cx="1028.7" cy="334.4" r="2"/><circle class="fl1" cx="1453.2" cy="352.9" r="2"/><circle class="fl1" cx="1246.5" cy="351.1" r="2.1"/><circle class="fl1" cx="1261.4" cy="381.1" r="2.4"/><circle class="fl1" cx="1309.3" cy="379.8" r="1.6"/><circle class="fl2" cx="1583.4" cy="383.3" r="1.7"/><circle class="fl2" cx="1108" cy="395" r="2.4"/><circle class="fl2" cx="1157" cy="352.5" r="1.5"/><circle class="fl2" cx="163.5" cy="360.9" r="1.6"/><circle class="fl1" cx="998.5" cy="391" r="2"/><circle class="fl1" cx="1044.8" cy="384" r="2.4"/><circle class="fl3" cx="191.8" cy="355.2" r="2.3"/><circle class="fl3" cx="1262.6" cy="351.3" r="1.9"/><circle class="fl3" cx="642.2" cy="394.3" r="1.6"/><circle class="fl3" cx="1589" cy="329.9" r="2.5"/><circle class="fl3" cx="1290.4" cy="338.2" r="2.6"/><circle class="fl3" cx="1051.6" cy="352.5" r="2.1"/><circle class="fl3" cx="34.2" cy="384" r="2.2"/><circle class="fl1" cx="694.1" cy="389" r="1.4"/><circle class="fl3" cx="340.4" cy="363.1" r="1.8"/><circle class="fl2" cx="97.4" cy="379.8" r="2.2"/><circle class="fl3" cx="1304.1" cy="364.2" r="1.6"/><circle class="fl2" cx="242.9" cy="363.7" r="2.3"/><circle class="fl1" cx="973.7" cy="382.3" r="1.6"/><circle class="fl3" cx="1254.8" cy="335.4" r="1.5"/><circle class="fl1" cx="306.1" cy="331" r="2"/><circle class="fl3" cx="1460" cy="359" r="2.6"/><circle class="fl2" cx="969.8" cy="342" r="1.9"/><circle class="fl2" cx="1506.4" cy="376.9" r="2.5"/><circle class="fl2" cx="1428.4" cy="342.2" r="1.6"/><circle class="fl1" cx="194.6" cy="358.9" r="2.2"/><circle class="fl2" cx="685.3" cy="342.9" r="2.3"/><circle class="fl3" cx="1435.2" cy="338.8" r="2.2"/><circle class="fl1" cx="585.9" cy="345.7" r="2.6"/><circle class="fl2" cx="351.3" cy="394.7" r="2.5"/><circle class="fl1" cx="260.5" cy="374.7" r="1.6"/><circle class="fl2" cx="690.4" cy="364.1" r="1.9"/><circle class="fl2" cx="570.6" cy="334.5" r="1.4"/><circle class="fl3" cx="28.9" cy="351.2" r="1.8"/><circle class="fl1" cx="1537.2" cy="335.9" r="2.6"/><circle class="fl1" cx="167.6" cy="346.6" r="2.5"/></g><g class="walker"><g transform="translate(0 376)"><g class="bob"><path class="lg leg" d="M-2 -12 L-3 0"/><path class="lg b leg" d="M2 -12 L3 0"/><path class="coat" d="M-6 -27 Q0 -30 6 -27 L7 -11 H-7Z"/><path class="scarf" d="M-5 -27 Q0 -24 5 -27 L4 -24 Q0 -22 -4 -24Z"/><path class="arm" d="M4 -24 L11 -16"/><circle class="skin" cx="0" cy="-32" r="4.6"/><path class="hair" d="M-4.6 -32.5 A4.6 4.6 0 0 1 4.6 -33 Q0 -35 -4.6 -32.5Z"/></g><path class="leash" d="M11 -16 Q20 -6 29 -9"/><g class="dog"><g class="bob d"><path class="dlg" d="M28 -6 L27 0"/><path class="dlg b" d="M31 -6 L32 0"/><path class="dlg" d="M38 -6 L37 0"/><path class="dlg b" d="M41 -6 L42 0"/><path class="tail" d="M26 -9 Q22 -14 23 -17"/><ellipse class="dog-b" cx="34" cy="-8.5" rx="9" ry="4.3"/><circle class="dog-b" cx="43.5" cy="-12.5" r="3.8"/><path class="dog-e" d="M42 -15.5 Q40.5 -12 42.4 -11.5Z"/><circle class="dog-b" cx="46.8" cy="-11.6" r="1.8"/></g></g></g></g></svg>
+  <svg class="tree" viewBox="0 0 560 446" preserveAspectRatio="xMinYMax meet" aria-hidden="true"><g class="crown"><path class="root" d="M70 446 C88 430 96 410 98 392 L128 392 C130 414 140 432 160 446Z"/><path class="br" d="M104 446 C108 396 92 350 124 302" stroke-width="30"/><path class="br" d="M122 306 C190 256 270 206 365 160" stroke-width="16"/><path class="br" d="M365 160 C410 140 460 134 528 118" stroke-width="8"/><path class="br" d="M120 306 C150 230 175 150 210 96" stroke-width="14"/><path class="br" d="M210 96 C230 66 255 44 288 22" stroke-width="7"/><path class="br" d="M112 316 C86 262 56 206 30 160" stroke-width="11"/><path class="br" d="M60 214 C46 190 36 164 22 118" stroke-width="5"/><path class="br" d="M200 112 C160 84 124 72 96 62" stroke-width="6"/><path class="br" d="M270 206 C286 172 298 142 304 108" stroke-width="7"/><path class="br" d="M365 160 C372 122 366 92 360 60" stroke-width="5"/><path class="br" d="M440 140 C446 120 441 104 432 90" stroke-width="4"/><g class="shade"><circle class="b3" cx="32.8" cy="136.4" r="28"/><circle class="b3" cx="62.4" cy="169.2" r="21.5"/><circle class="b3" cx="69.3" cy="154.6" r="22.5"/><circle class="b3" cx="23.1" cy="143.4" r="20.5"/><circle class="b3" cx="32.2" cy="173.3" r="22.3"/><circle class="b3" cx="47.7" cy="134.5" r="29.2"/><circle class="b3" cx="21.1" cy="146.3" r="21.5"/><circle class="b3" cx="89.2" cy="91.3" r="27"/><circle class="b3" cx="121.2" cy="79.3" r="32.4"/><circle class="b3" cx="118.2" cy="78.8" r="27.9"/><circle class="b3" cx="122.7" cy="79.7" r="25.7"/><circle class="b3" cx="132.2" cy="117.8" r="26.9"/><circle class="b3" cx="106.4" cy="79.4" r="21.1"/><circle class="b3" cx="136.8" cy="88.5" r="28.1"/><circle class="b3" cx="213.8" cy="81.9" r="25.4"/><circle class="b3" cx="186.3" cy="87.5" r="24"/><circle class="b3" cx="185" cy="87.2" r="30.3"/><circle class="b3" cx="219.3" cy="75.9" r="25.7"/><circle class="b3" cx="217" cy="78.9" r="22.7"/><circle class="b3" cx="166.7" cy="72.1" r="33.8"/><circle class="b3" cx="167.6" cy="74.1" r="25.3"/><circle class="b3" cx="256.8" cy="20.1" r="23.5"/><circle class="b3" cx="252.1" cy="25.9" r="26.9"/><circle class="b3" cx="282.5" cy="55.9" r="26"/><circle class="b3" cx="302.1" cy="38.3" r="23.4"/><circle class="b3" cx="300.3" cy="43.5" r="23.5"/><circle class="b3" cx="276.3" cy="13.4" r="21.7"/><circle class="b3" cx="284.8" cy="14.6" r="29.4"/><circle class="b3" cx="281.6" cy="122.4" r="29.6"/><circle class="b3" cx="284.7" cy="105.8" r="20.4"/><circle class="b3" cx="297.6" cy="97.5" r="26.9"/><circle class="b3" cx="288.7" cy="132.1" r="24.2"/><circle class="b3" cx="330.9" cy="113.2" r="20.4"/><circle class="b3" cx="282" cy="123.4" r="26.1"/><circle class="b3" cx="327" cy="128.5" r="24.1"/><circle class="b3" cx="393" cy="140.9" r="24.7"/><circle class="b3" cx="370.9" cy="135.7" r="20"/><circle class="b3" cx="376.7" cy="174.8" r="26.2"/><circle class="b3" cx="371.9" cy="174.5" r="20"/><circle class="b3" cx="393.5" cy="168.7" r="27.4"/><circle class="b3" cx="397.8" cy="163.7" r="23.2"/><circle class="b3" cx="355.9" cy="166.1" r="20.9"/><circle class="b3" cx="471.5" cy="151.8" r="21.8"/><circle class="b3" cx="443" cy="153.5" r="26"/><circle class="b3" cx="434.3" cy="136.1" r="17.1"/><circle class="b3" cx="444.4" cy="123.7" r="22.1"/><circle class="b3" cx="461.2" cy="121.5" r="20.8"/><circle class="b3" cx="447.7" cy="122.3" r="19"/><circle class="b3" cx="464.6" cy="155.6" r="22.6"/><circle class="b3" cx="524.6" cy="135.4" r="17"/><circle class="b3" cx="537.3" cy="132.1" r="14.8"/><circle class="b3" cx="523.9" cy="135.3" r="19.5"/><circle class="b3" cx="542.1" cy="115.1" r="21"/><circle class="b3" cx="519.7" cy="134.4" r="19.4"/><circle class="b3" cx="542" cy="114.9" r="13.6"/><circle class="b3" cx="542.8" cy="125.3" r="19.4"/><circle class="b3" cx="229.4" cy="171.3" r="22.9"/><circle class="b3" cx="206.8" cy="169.4" r="23.7"/><circle class="b3" cx="237.2" cy="166.2" r="26.2"/><circle class="b3" cx="225.6" cy="172.4" r="22.5"/><circle class="b3" cx="220.7" cy="137" r="20.5"/><circle class="b3" cx="225.4" cy="172.4" r="21.5"/><circle class="b3" cx="241.7" cy="157.8" r="23.7"/><circle class="b3" cx="118.9" cy="205.2" r="19.8"/><circle class="b3" cx="116.5" cy="194.2" r="18.1"/><circle class="b3" cx="127.9" cy="211.8" r="16.4"/><circle class="b3" cx="154.8" cy="192" r="23"/><circle class="b3" cx="128.6" cy="182" r="22.4"/><circle class="b3" cx="116.6" cy="200.2" r="21.1"/><circle class="b3" cx="154.1" cy="203.5" r="20.6"/><circle class="b3" cx="27.2" cy="83.5" r="21.4"/><circle class="b3" cx="57.1" cy="62" r="25.7"/><circle class="b3" cx="57" cy="72.3" r="24.1"/><circle class="b3" cx="40.8" cy="84.6" r="25.4"/><circle class="b3" cx="35.2" cy="49" r="24.9"/><circle class="b3" cx="14.2" cy="69.4" r="20.3"/><circle class="b3" cx="14.1" cy="65.3" r="25.6"/><circle class="b3" cx="345.2" cy="68.3" r="18.6"/><circle class="b3" cx="384.7" cy="59.4" r="24.6"/><circle class="b3" cx="371.9" cy="50.6" r="21"/><circle class="b3" cx="352.3" cy="79.9" r="25"/><circle class="b3" cx="368.3" cy="50" r="22.1"/><circle class="b3" cx="365.2" cy="49.9" r="25"/><circle class="b3" cx="345.3" cy="64.4" r="19.1"/><circle class="b3" cx="446.3" cy="97.8" r="18.5"/><circle class="b3" cx="418.3" cy="114.1" r="17"/><circle class="b3" cx="409.3" cy="100.8" r="17.8"/><circle class="b3" cx="415.6" cy="89.5" r="21.9"/><circle class="b3" cx="410.5" cy="106.4" r="14.9"/><circle class="b3" cx="446.3" cy="104.3" r="15.4"/><circle class="b3" cx="438.7" cy="88.5" r="17.3"/><circle class="b3" cx="71.6" cy="226.2" r="11.1"/><circle class="b3" cx="53.6" cy="231.2" r="16.9"/><circle class="b3" cx="76.8" cy="229.3" r="15.7"/><circle class="b3" cx="60.7" cy="247.9" r="13.2"/><circle class="b3" cx="60.1" cy="247.7" r="16.1"/><circle class="b3" cx="76.7" cy="229.2" r="12"/><circle class="b3" cx="76.7" cy="244.7" r="13.7"/><circle class="b3" cx="14" cy="126.1" r="13.9"/><circle class="b3" cx="20.4" cy="126.4" r="16.2"/><circle class="b3" cx="1.6" cy="111.7" r="14.3"/><circle class="b3" cx="7.5" cy="123.4" r="18.8"/><circle class="b3" cx="2.2" cy="116.8" r="18.8"/><circle class="b3" cx="27.7" cy="123.9" r="13.3"/><circle class="b3" cx="4.6" cy="120.9" r="18.1"/><circle class="b3" cx="147.4" cy="44.2" r="24.1"/><circle class="b3" cx="132.7" cy="31.6" r="21.6"/><circle class="b3" cx="132.6" cy="22.9" r="17.9"/><circle class="b3" cx="166.7" cy="12.3" r="26.4"/><circle class="b3" cx="132.2" cy="24.4" r="17.2"/><circle class="b3" cx="175.8" cy="24.4" r="17.6"/><circle class="b3" cx="174.1" cy="19.8" r="22.1"/></g><g class="bloom"><circle class="b4" cx="28.8" cy="131.4" r="24.1"/><circle class="b2" cx="58.4" cy="164.2" r="18.5"/><circle class="b1" cx="65.3" cy="149.6" r="19.4"/><circle class="b2" cx="19.1" cy="138.4" r="17.6"/><circle class="b1" cx="28.2" cy="168.3" r="19.2"/><circle class="b1" cx="43.7" cy="129.5" r="25.1"/><circle class="b1" cx="17.1" cy="141.3" r="18.5"/><circle class="b1" cx="85.2" cy="86.3" r="23.2"/><circle class="b1" cx="117.2" cy="74.3" r="27.9"/><circle class="b1" cx="114.2" cy="73.8" r="24"/><circle class="b1" cx="118.7" cy="74.7" r="22.1"/><circle class="b4" cx="128.2" cy="112.8" r="23.2"/><circle class="b2" cx="102.4" cy="74.4" r="18.1"/><circle class="b4" cx="132.8" cy="83.5" r="24.2"/><circle class="b2" cx="209.8" cy="76.9" r="21.8"/><circle class="b2" cx="182.3" cy="82.5" r="20.6"/><circle class="b1" cx="181" cy="82.2" r="26.1"/><circle class="b2" cx="215.3" cy="70.9" r="22.1"/><circle class="b4" cx="213" cy="73.9" r="19.5"/><circle class="b1" cx="162.7" cy="67.1" r="29"/><circle class="b1" cx="163.6" cy="69.1" r="21.7"/><circle class="b1" cx="252.8" cy="15.1" r="20.2"/><circle class="b2" cx="248.1" cy="20.9" r="23.2"/><circle class="b1" cx="278.5" cy="50.9" r="22.4"/><circle class="b1" cx="298.1" cy="33.3" r="20.1"/><circle class="b2" cx="296.3" cy="38.5" r="20.2"/><circle class="b2" cx="272.3" cy="8.4" r="18.7"/><circle class="b4" cx="280.8" cy="9.6" r="25.3"/><circle class="b4" cx="277.6" cy="117.4" r="25.4"/><circle class="b2" cx="280.7" cy="100.8" r="17.6"/><circle class="b2" cx="293.6" cy="92.5" r="23.1"/><circle class="b2" cx="284.7" cy="127.1" r="20.8"/><circle class="b4" cx="326.9" cy="108.2" r="17.5"/><circle class="b2" cx="278" cy="118.4" r="22.5"/><circle class="b2" cx="323" cy="123.5" r="20.8"/><circle class="b1" cx="389" cy="135.9" r="21.2"/><circle class="b2" cx="366.9" cy="130.7" r="17.2"/><circle class="b1" cx="372.7" cy="169.8" r="22.5"/><circle class="b2" cx="367.9" cy="169.5" r="17.2"/><circle class="b1" cx="389.5" cy="163.7" r="23.6"/><circle class="b4" cx="393.8" cy="158.7" r="20"/><circle class="b1" cx="351.9" cy="161.1" r="17.9"/><circle class="b2" cx="467.5" cy="146.8" r="18.7"/><circle class="b1" cx="439" cy="148.5" r="22.4"/><circle class="b1" cx="430.3" cy="131.1" r="14.7"/><circle class="b1" cx="440.4" cy="118.7" r="19"/><circle class="b1" cx="457.2" cy="116.5" r="17.9"/><circle class="b2" cx="443.7" cy="117.3" r="16.3"/><circle class="b1" cx="460.6" cy="150.6" r="19.5"/><circle class="b1" cx="520.6" cy="130.4" r="14.6"/><circle class="b1" cx="533.3" cy="127.1" r="12.7"/><circle class="b2" cx="519.9" cy="130.3" r="16.7"/><circle class="b1" cx="538.1" cy="110.1" r="18.1"/><circle class="b4" cx="515.7" cy="129.4" r="16.7"/><circle class="b1" cx="538" cy="109.9" r="11.7"/><circle class="b1" cx="538.8" cy="120.3" r="16.7"/><circle class="b2" cx="225.4" cy="166.3" r="19.7"/><circle class="b2" cx="202.8" cy="164.4" r="20.4"/><circle class="b4" cx="233.2" cy="161.2" r="22.6"/><circle class="b2" cx="221.6" cy="167.4" r="19.4"/><circle class="b1" cx="216.7" cy="132" r="17.6"/><circle class="b1" cx="221.4" cy="167.4" r="18.5"/><circle class="b2" cx="237.7" cy="152.8" r="20.4"/><circle class="b4" cx="114.9" cy="200.2" r="17"/><circle class="b1" cx="112.5" cy="189.2" r="15.6"/><circle class="b4" cx="123.9" cy="206.8" r="14.1"/><circle class="b1" cx="150.8" cy="187" r="19.7"/><circle class="b2" cx="124.6" cy="177" r="19.3"/><circle class="b4" cx="112.6" cy="195.2" r="18.1"/><circle class="b4" cx="150.1" cy="198.5" r="17.7"/><circle class="b4" cx="23.2" cy="78.5" r="18.4"/><circle class="b1" cx="53.1" cy="57" r="22.1"/><circle class="b4" cx="53" cy="67.3" r="20.7"/><circle class="b1" cx="36.8" cy="79.6" r="21.8"/><circle class="b1" cx="31.2" cy="44" r="21.4"/><circle class="b1" cx="10.2" cy="64.4" r="17.5"/><circle class="b2" cx="10.1" cy="60.3" r="22.1"/><circle class="b4" cx="341.2" cy="63.3" r="16"/><circle class="b1" cx="380.7" cy="54.4" r="21.1"/><circle class="b1" cx="367.9" cy="45.6" r="18"/><circle class="b1" cx="348.3" cy="74.9" r="21.5"/><circle class="b1" cx="364.3" cy="45" r="19"/><circle class="b2" cx="361.2" cy="44.9" r="21.5"/><circle class="b2" cx="341.3" cy="59.4" r="16.4"/><circle class="b2" cx="442.3" cy="92.8" r="15.9"/><circle class="b4" cx="414.3" cy="109.1" r="14.6"/><circle class="b2" cx="405.3" cy="95.8" r="15.3"/><circle class="b1" cx="411.6" cy="84.5" r="18.9"/><circle class="b2" cx="406.5" cy="101.4" r="12.8"/><circle class="b4" cx="442.3" cy="99.3" r="13.2"/><circle class="b4" cx="434.7" cy="83.5" r="14.8"/><circle class="b2" cx="67.6" cy="221.2" r="9.5"/><circle class="b2" cx="49.6" cy="226.2" r="14.5"/><circle class="b4" cx="72.8" cy="224.3" r="13.5"/><circle class="b1" cx="56.7" cy="242.9" r="11.4"/><circle class="b1" cx="56.1" cy="242.7" r="13.8"/><circle class="b4" cx="72.7" cy="224.2" r="10.3"/><circle class="b1" cx="72.7" cy="239.7" r="11.8"/><circle class="b2" cx="10" cy="121.1" r="12"/><circle class="b1" cx="16.4" cy="121.4" r="13.9"/><circle class="b1" cx="-2.4" cy="106.7" r="12.3"/><circle class="b1" cx="3.5" cy="118.4" r="16.1"/><circle class="b4" cx="-1.8" cy="111.8" r="16.2"/><circle class="b2" cx="23.7" cy="118.9" r="11.5"/><circle class="b2" cx="0.6" cy="115.9" r="15.5"/><circle class="b1" cx="143.4" cy="39.2" r="20.7"/><circle class="b1" cx="128.7" cy="26.6" r="18.5"/><circle class="b1" cx="128.6" cy="17.9" r="15.4"/><circle class="b2" cx="162.7" cy="7.3" r="22.7"/><circle class="b1" cx="128.2" cy="19.4" r="14.8"/><circle class="b1" cx="171.8" cy="19.4" r="15.1"/><circle class="b2" cx="170.1" cy="14.8" r="19"/></g><path class="tw" d="M300 112 C312 100 322 96 336 94"/><path class="tw" d="M190 70 C200 54 212 46 226 42"/><path class="tw" d="M452 134 C470 126 484 128 498 122"/><path class="tw" d="M110 100 C96 92 84 90 70 92"/><g class="fws"><g class="fw" transform="translate(43.7 148.4)"><ellipse cx="0" cy="-3" rx="2.4" ry="3" transform="rotate(62.4)"/><ellipse cx="0" cy="-3" rx="2.4" ry="3" transform="rotate(134.4)"/><ellipse cx="0" cy="-3" rx="2.4" ry="3" transform="rotate(206.4)"/><ellipse cx="0" cy="-3" rx="2.4" ry="3" transform="rotate(278.4)"/><ellipse cx="0" cy="-3" rx="2.4" ry="3" transform="rotate(350.4)"/><circle class="core" r="1.3"/></g><g class="fw" transform="translate(43.2 151.3)"><ellipse cx="0" cy="-2.3" rx="1.8" ry="2.3" transform="rotate(41.7)"/><ellipse cx="0" cy="-2.3" rx="1.8" ry="2.3" transform="rotate(113.7)"/><ellipse cx="0" cy="-2.3" rx="1.8" ry="2.3" transform="rotate(185.7)"/><ellipse cx="0" cy="-2.3" rx="1.8" ry="2.3" transform="rotate(257.7)"/><ellipse cx="0" cy="-2.3" rx="1.8" ry="2.3" transform="rotate(329.7)"/><circle class="core" r="1"/></g><g class="fw" transform="translate(12.2 161.7)"><ellipse cx="0" cy="-2.9" rx="2.4" ry="2.9" transform="rotate(71.2)"/><ellipse cx="0" cy="-2.9" rx="2.4" ry="2.9" transform="rotate(143.2)"/><ellipse cx="0" cy="-2.9" rx="2.4" ry="2.9" transform="rotate(215.2)"/><ellipse cx="0" cy="-2.9" rx="2.4" ry="2.9" transform="rotate(287.2)"/><ellipse cx="0" cy="-2.9" rx="2.4" ry="2.9" transform="rotate(359.2)"/><circle class="core" r="1.3"/></g><g class="fw" transform="translate(90.2 98)"><ellipse cx="0" cy="-2.8" rx="2.3" ry="2.8" transform="rotate(64.5)"/><ellipse cx="0" cy="-2.8" rx="2.3" ry="2.8" transform="rotate(136.5)"/><ellipse cx="0" cy="-2.8" rx="2.3" ry="2.8" transform="rotate(208.5)"/><ellipse cx="0" cy="-2.8" rx="2.3" ry="2.8" transform="rotate(280.5)"/><ellipse cx="0" cy="-2.8" rx="2.3" ry="2.8" transform="rotate(352.5)"/><circle class="core" r="1.3"/></g><g class="fw" transform="translate(133.7 74.8)"><ellipse cx="0" cy="-2.6" rx="2.1" ry="2.6" transform="rotate(1.9)"/><ellipse cx="0" cy="-2.6" rx="2.1" ry="2.6" transform="rotate(73.9)"/><ellipse cx="0" cy="-2.6" rx="2.1" ry="2.6" transform="rotate(145.9)"/><ellipse cx="0" cy="-2.6" rx="2.1" ry="2.6" transform="rotate(217.9)"/><ellipse cx="0" cy="-2.6" rx="2.1" ry="2.6" transform="rotate(289.9)"/><circle class="core" r="1.2"/></g><g class="fw" transform="translate(106.8 98.5)"><ellipse cx="0" cy="-3.4" rx="2.7" ry="3.4" transform="rotate(18.9)"/><ellipse cx="0" cy="-3.4" rx="2.7" ry="3.4" transform="rotate(90.9)"/><ellipse cx="0" cy="-3.4" rx="2.7" ry="3.4" transform="rotate(162.9)"/><ellipse cx="0" cy="-3.4" rx="2.7" ry="3.4" transform="rotate(234.9)"/><ellipse cx="0" cy="-3.4" rx="2.7" ry="3.4" transform="rotate(306.9)"/><circle class="core" r="1.5"/></g><g class="fw" transform="translate(202.5 70.2)"><ellipse cx="0" cy="-3.7" rx="2.9" ry="3.7" transform="rotate(59.9)"/><ellipse cx="0" cy="-3.7" rx="2.9" ry="3.7" transform="rotate(131.9)"/><ellipse cx="0" cy="-3.7" rx="2.9" ry="3.7" transform="rotate(203.9)"/><ellipse cx="0" cy="-3.7" rx="2.9" ry="3.7" transform="rotate(275.9)"/><ellipse cx="0" cy="-3.7" rx="2.9" ry="3.7" transform="rotate(347.9)"/><circle class="core" r="1.7"/></g><g class="fw" transform="translate(195.7 74.9)"><ellipse cx="0" cy="-3.8" rx="3.1" ry="3.8" transform="rotate(58.4)"/><ellipse cx="0" cy="-3.8" rx="3.1" ry="3.8" transform="rotate(130.4)"/><ellipse cx="0" cy="-3.8" rx="3.1" ry="3.8" transform="rotate(202.4)"/><ellipse cx="0" cy="-3.8" rx="3.1" ry="3.8" transform="rotate(274.4)"/><ellipse cx="0" cy="-3.8" rx="3.1" ry="3.8" transform="rotate(346.4)"/><circle class="core" r="1.7"/></g><g class="fw" transform="translate(154.5 73.6)"><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(63.2)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(135.2)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(207.2)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(279.2)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(351.2)"/><circle class="core" r="1.1"/></g><g class="fw" transform="translate(292.8 15.2)"><ellipse cx="0" cy="-3.8" rx="3" ry="3.8" transform="rotate(46.2)"/><ellipse cx="0" cy="-3.8" rx="3" ry="3.8" transform="rotate(118.2)"/><ellipse cx="0" cy="-3.8" rx="3" ry="3.8" transform="rotate(190.2)"/><ellipse cx="0" cy="-3.8" rx="3" ry="3.8" transform="rotate(262.2)"/><ellipse cx="0" cy="-3.8" rx="3" ry="3.8" transform="rotate(334.2)"/><circle class="core" r="1.7"/></g><g class="fw" transform="translate(267.4 22)"><ellipse cx="0" cy="-3" rx="2.5" ry="3" transform="rotate(30.9)"/><ellipse cx="0" cy="-3" rx="2.5" ry="3" transform="rotate(102.9)"/><ellipse cx="0" cy="-3" rx="2.5" ry="3" transform="rotate(174.9)"/><ellipse cx="0" cy="-3" rx="2.5" ry="3" transform="rotate(246.9)"/><ellipse cx="0" cy="-3" rx="2.5" ry="3" transform="rotate(318.9)"/><circle class="core" r="1.4"/></g><g class="fw" transform="translate(269.6 30.3)"><ellipse cx="0" cy="-3.6" rx="2.9" ry="3.6" transform="rotate(11.1)"/><ellipse cx="0" cy="-3.6" rx="2.9" ry="3.6" transform="rotate(83.1)"/><ellipse cx="0" cy="-3.6" rx="2.9" ry="3.6" transform="rotate(155.1)"/><ellipse cx="0" cy="-3.6" rx="2.9" ry="3.6" transform="rotate(227.1)"/><ellipse cx="0" cy="-3.6" rx="2.9" ry="3.6" transform="rotate(299.1)"/><circle class="core" r="1.6"/></g><g class="fw" transform="translate(290.8 106)"><ellipse cx="0" cy="-2.7" rx="2.2" ry="2.7" transform="rotate(19.7)"/><ellipse cx="0" cy="-2.7" rx="2.2" ry="2.7" transform="rotate(91.7)"/><ellipse cx="0" cy="-2.7" rx="2.2" ry="2.7" transform="rotate(163.7)"/><ellipse cx="0" cy="-2.7" rx="2.2" ry="2.7" transform="rotate(235.7)"/><ellipse cx="0" cy="-2.7" rx="2.2" ry="2.7" transform="rotate(307.7)"/><circle class="core" r="1.2"/></g><g class="fw" transform="translate(316.3 110.4)"><ellipse cx="0" cy="-3.8" rx="3.1" ry="3.8" transform="rotate(11.9)"/><ellipse cx="0" cy="-3.8" rx="3.1" ry="3.8" transform="rotate(83.9)"/><ellipse cx="0" cy="-3.8" rx="3.1" ry="3.8" transform="rotate(155.9)"/><ellipse cx="0" cy="-3.8" rx="3.1" ry="3.8" transform="rotate(227.9)"/><ellipse cx="0" cy="-3.8" rx="3.1" ry="3.8" transform="rotate(299.9)"/><circle class="core" r="1.7"/></g><g class="fw" transform="translate(291.5 98)"><ellipse cx="0" cy="-3.4" rx="2.7" ry="3.4" transform="rotate(37)"/><ellipse cx="0" cy="-3.4" rx="2.7" ry="3.4" transform="rotate(109)"/><ellipse cx="0" cy="-3.4" rx="2.7" ry="3.4" transform="rotate(181)"/><ellipse cx="0" cy="-3.4" rx="2.7" ry="3.4" transform="rotate(253)"/><ellipse cx="0" cy="-3.4" rx="2.7" ry="3.4" transform="rotate(325)"/><circle class="core" r="1.5"/></g><g class="fw" transform="translate(368 143.5)"><ellipse cx="0" cy="-2.8" rx="2.3" ry="2.8" transform="rotate(66.6)"/><ellipse cx="0" cy="-2.8" rx="2.3" ry="2.8" transform="rotate(138.6)"/><ellipse cx="0" cy="-2.8" rx="2.3" ry="2.8" transform="rotate(210.6)"/><ellipse cx="0" cy="-2.8" rx="2.3" ry="2.8" transform="rotate(282.6)"/><ellipse cx="0" cy="-2.8" rx="2.3" ry="2.8" transform="rotate(354.6)"/><circle class="core" r="1.3"/></g><g class="fw" transform="translate(374.9 162.4)"><ellipse cx="0" cy="-2.7" rx="2.2" ry="2.7" transform="rotate(42)"/><ellipse cx="0" cy="-2.7" rx="2.2" ry="2.7" transform="rotate(114)"/><ellipse cx="0" cy="-2.7" rx="2.2" ry="2.7" transform="rotate(186)"/><ellipse cx="0" cy="-2.7" rx="2.2" ry="2.7" transform="rotate(258)"/><ellipse cx="0" cy="-2.7" rx="2.2" ry="2.7" transform="rotate(330)"/><circle class="core" r="1.2"/></g><g class="fw" transform="translate(373.2 146.7)"><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(4.6)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(76.6)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(148.6)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(220.6)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(292.6)"/><circle class="core" r="1.1"/></g><g class="fw" transform="translate(449.7 144.1)"><ellipse cx="0" cy="-3.2" rx="2.6" ry="3.2" transform="rotate(41.6)"/><ellipse cx="0" cy="-3.2" rx="2.6" ry="3.2" transform="rotate(113.6)"/><ellipse cx="0" cy="-3.2" rx="2.6" ry="3.2" transform="rotate(185.6)"/><ellipse cx="0" cy="-3.2" rx="2.6" ry="3.2" transform="rotate(257.6)"/><ellipse cx="0" cy="-3.2" rx="2.6" ry="3.2" transform="rotate(329.6)"/><circle class="core" r="1.4"/></g><g class="fw" transform="translate(452.1 134)"><ellipse cx="0" cy="-2.6" rx="2.1" ry="2.6" transform="rotate(60.8)"/><ellipse cx="0" cy="-2.6" rx="2.1" ry="2.6" transform="rotate(132.8)"/><ellipse cx="0" cy="-2.6" rx="2.1" ry="2.6" transform="rotate(204.8)"/><ellipse cx="0" cy="-2.6" rx="2.1" ry="2.6" transform="rotate(276.8)"/><ellipse cx="0" cy="-2.6" rx="2.1" ry="2.6" transform="rotate(348.8)"/><circle class="core" r="1.2"/></g><g class="fw" transform="translate(458.9 137.2)"><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(37.5)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(109.5)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(181.5)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(253.5)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(325.5)"/><circle class="core" r="1.1"/></g><g class="fw" transform="translate(520.4 115.7)"><ellipse cx="0" cy="-2.3" rx="1.8" ry="2.3" transform="rotate(59)"/><ellipse cx="0" cy="-2.3" rx="1.8" ry="2.3" transform="rotate(131)"/><ellipse cx="0" cy="-2.3" rx="1.8" ry="2.3" transform="rotate(203)"/><ellipse cx="0" cy="-2.3" rx="1.8" ry="2.3" transform="rotate(275)"/><ellipse cx="0" cy="-2.3" rx="1.8" ry="2.3" transform="rotate(347)"/><circle class="core" r="1"/></g><g class="fw" transform="translate(519 110.1)"><ellipse cx="0" cy="-3.8" rx="3.1" ry="3.8" transform="rotate(20.2)"/><ellipse cx="0" cy="-3.8" rx="3.1" ry="3.8" transform="rotate(92.2)"/><ellipse cx="0" cy="-3.8" rx="3.1" ry="3.8" transform="rotate(164.2)"/><ellipse cx="0" cy="-3.8" rx="3.1" ry="3.8" transform="rotate(236.2)"/><ellipse cx="0" cy="-3.8" rx="3.1" ry="3.8" transform="rotate(308.2)"/><circle class="core" r="1.7"/></g><g class="fw" transform="translate(536.7 131.9)"><ellipse cx="0" cy="-2.3" rx="1.9" ry="2.3" transform="rotate(26.1)"/><ellipse cx="0" cy="-2.3" rx="1.9" ry="2.3" transform="rotate(98.1)"/><ellipse cx="0" cy="-2.3" rx="1.9" ry="2.3" transform="rotate(170.1)"/><ellipse cx="0" cy="-2.3" rx="1.9" ry="2.3" transform="rotate(242.1)"/><ellipse cx="0" cy="-2.3" rx="1.9" ry="2.3" transform="rotate(314.1)"/><circle class="core" r="1"/></g><g class="fw" transform="translate(218.7 165.2)"><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(12)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(84)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(156)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(228)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(300)"/><circle class="core" r="1.1"/></g><g class="fw" transform="translate(199 162.3)"><ellipse cx="0" cy="-2.3" rx="1.9" ry="2.3" transform="rotate(67.4)"/><ellipse cx="0" cy="-2.3" rx="1.9" ry="2.3" transform="rotate(139.4)"/><ellipse cx="0" cy="-2.3" rx="1.9" ry="2.3" transform="rotate(211.4)"/><ellipse cx="0" cy="-2.3" rx="1.9" ry="2.3" transform="rotate(283.4)"/><ellipse cx="0" cy="-2.3" rx="1.9" ry="2.3" transform="rotate(355.4)"/><circle class="core" r="1.1"/></g><g class="fw" transform="translate(216 154.2)"><ellipse cx="0" cy="-3" rx="2.4" ry="3" transform="rotate(65.2)"/><ellipse cx="0" cy="-3" rx="2.4" ry="3" transform="rotate(137.2)"/><ellipse cx="0" cy="-3" rx="2.4" ry="3" transform="rotate(209.2)"/><ellipse cx="0" cy="-3" rx="2.4" ry="3" transform="rotate(281.2)"/><ellipse cx="0" cy="-3" rx="2.4" ry="3" transform="rotate(353.2)"/><circle class="core" r="1.4"/></g><g class="fw" transform="translate(154 182.8)"><ellipse cx="0" cy="-3.2" rx="2.6" ry="3.2" transform="rotate(48.5)"/><ellipse cx="0" cy="-3.2" rx="2.6" ry="3.2" transform="rotate(120.5)"/><ellipse cx="0" cy="-3.2" rx="2.6" ry="3.2" transform="rotate(192.5)"/><ellipse cx="0" cy="-3.2" rx="2.6" ry="3.2" transform="rotate(264.5)"/><ellipse cx="0" cy="-3.2" rx="2.6" ry="3.2" transform="rotate(336.5)"/><circle class="core" r="1.5"/></g><g class="fw" transform="translate(118.9 186.2)"><ellipse cx="0" cy="-3.7" rx="3" ry="3.7" transform="rotate(40.5)"/><ellipse cx="0" cy="-3.7" rx="3" ry="3.7" transform="rotate(112.5)"/><ellipse cx="0" cy="-3.7" rx="3" ry="3.7" transform="rotate(184.5)"/><ellipse cx="0" cy="-3.7" rx="3" ry="3.7" transform="rotate(256.5)"/><ellipse cx="0" cy="-3.7" rx="3" ry="3.7" transform="rotate(328.5)"/><circle class="core" r="1.7"/></g><g class="fw" transform="translate(142.7 186.1)"><ellipse cx="0" cy="-3.5" rx="2.9" ry="3.5" transform="rotate(54.3)"/><ellipse cx="0" cy="-3.5" rx="2.9" ry="3.5" transform="rotate(126.3)"/><ellipse cx="0" cy="-3.5" rx="2.9" ry="3.5" transform="rotate(198.3)"/><ellipse cx="0" cy="-3.5" rx="2.9" ry="3.5" transform="rotate(270.3)"/><ellipse cx="0" cy="-3.5" rx="2.9" ry="3.5" transform="rotate(342.3)"/><circle class="core" r="1.6"/></g><g class="fw" transform="translate(62.2 68.5)"><ellipse cx="0" cy="-3.6" rx="2.9" ry="3.6" transform="rotate(67.4)"/><ellipse cx="0" cy="-3.6" rx="2.9" ry="3.6" transform="rotate(139.4)"/><ellipse cx="0" cy="-3.6" rx="2.9" ry="3.6" transform="rotate(211.4)"/><ellipse cx="0" cy="-3.6" rx="2.9" ry="3.6" transform="rotate(283.4)"/><ellipse cx="0" cy="-3.6" rx="2.9" ry="3.6" transform="rotate(355.4)"/><circle class="core" r="1.6"/></g><g class="fw" transform="translate(21.4 62.9)"><ellipse cx="0" cy="-3.7" rx="3" ry="3.7" transform="rotate(10.9)"/><ellipse cx="0" cy="-3.7" rx="3" ry="3.7" transform="rotate(82.9)"/><ellipse cx="0" cy="-3.7" rx="3" ry="3.7" transform="rotate(154.9)"/><ellipse cx="0" cy="-3.7" rx="3" ry="3.7" transform="rotate(226.9)"/><ellipse cx="0" cy="-3.7" rx="3" ry="3.7" transform="rotate(298.9)"/><circle class="core" r="1.7"/></g><g class="fw" transform="translate(28.1 82.2)"><ellipse cx="0" cy="-3.6" rx="2.9" ry="3.6" transform="rotate(22)"/><ellipse cx="0" cy="-3.6" rx="2.9" ry="3.6" transform="rotate(94)"/><ellipse cx="0" cy="-3.6" rx="2.9" ry="3.6" transform="rotate(166)"/><ellipse cx="0" cy="-3.6" rx="2.9" ry="3.6" transform="rotate(238)"/><ellipse cx="0" cy="-3.6" rx="2.9" ry="3.6" transform="rotate(310)"/><circle class="core" r="1.6"/></g><g class="fw" transform="translate(351.6 52.1)"><ellipse cx="0" cy="-2.9" rx="2.3" ry="2.9" transform="rotate(34.7)"/><ellipse cx="0" cy="-2.9" rx="2.3" ry="2.9" transform="rotate(106.7)"/><ellipse cx="0" cy="-2.9" rx="2.3" ry="2.9" transform="rotate(178.7)"/><ellipse cx="0" cy="-2.9" rx="2.3" ry="2.9" transform="rotate(250.7)"/><ellipse cx="0" cy="-2.9" rx="2.3" ry="2.9" transform="rotate(322.7)"/><circle class="core" r="1.3"/></g><g class="fw" transform="translate(362.1 60.4)"><ellipse cx="0" cy="-3.8" rx="3" ry="3.8" transform="rotate(25.4)"/><ellipse cx="0" cy="-3.8" rx="3" ry="3.8" transform="rotate(97.4)"/><ellipse cx="0" cy="-3.8" rx="3" ry="3.8" transform="rotate(169.4)"/><ellipse cx="0" cy="-3.8" rx="3" ry="3.8" transform="rotate(241.4)"/><ellipse cx="0" cy="-3.8" rx="3" ry="3.8" transform="rotate(313.4)"/><circle class="core" r="1.7"/></g><g class="fw" transform="translate(358.1 65.6)"><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(25.9)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(97.9)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(169.9)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(241.9)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(313.9)"/><circle class="core" r="1.1"/></g><g class="fw" transform="translate(416 90)"><ellipse cx="0" cy="-2.9" rx="2.4" ry="2.9" transform="rotate(58.8)"/><ellipse cx="0" cy="-2.9" rx="2.4" ry="2.9" transform="rotate(130.8)"/><ellipse cx="0" cy="-2.9" rx="2.4" ry="2.9" transform="rotate(202.8)"/><ellipse cx="0" cy="-2.9" rx="2.4" ry="2.9" transform="rotate(274.8)"/><ellipse cx="0" cy="-2.9" rx="2.4" ry="2.9" transform="rotate(346.8)"/><circle class="core" r="1.3"/></g><g class="fw" transform="translate(445.3 90.5)"><ellipse cx="0" cy="-3.8" rx="3" ry="3.8" transform="rotate(12.7)"/><ellipse cx="0" cy="-3.8" rx="3" ry="3.8" transform="rotate(84.7)"/><ellipse cx="0" cy="-3.8" rx="3" ry="3.8" transform="rotate(156.7)"/><ellipse cx="0" cy="-3.8" rx="3" ry="3.8" transform="rotate(228.7)"/><ellipse cx="0" cy="-3.8" rx="3" ry="3.8" transform="rotate(300.7)"/><circle class="core" r="1.7"/></g><g class="fw" transform="translate(436.5 84.5)"><ellipse cx="0" cy="-3.1" rx="2.5" ry="3.1" transform="rotate(58.9)"/><ellipse cx="0" cy="-3.1" rx="2.5" ry="3.1" transform="rotate(130.9)"/><ellipse cx="0" cy="-3.1" rx="2.5" ry="3.1" transform="rotate(202.9)"/><ellipse cx="0" cy="-3.1" rx="2.5" ry="3.1" transform="rotate(274.9)"/><ellipse cx="0" cy="-3.1" rx="2.5" ry="3.1" transform="rotate(346.9)"/><circle class="core" r="1.4"/></g><g class="fw" transform="translate(61.2 236.2)"><ellipse cx="0" cy="-2.7" rx="2.2" ry="2.7" transform="rotate(63.4)"/><ellipse cx="0" cy="-2.7" rx="2.2" ry="2.7" transform="rotate(135.4)"/><ellipse cx="0" cy="-2.7" rx="2.2" ry="2.7" transform="rotate(207.4)"/><ellipse cx="0" cy="-2.7" rx="2.2" ry="2.7" transform="rotate(279.4)"/><ellipse cx="0" cy="-2.7" rx="2.2" ry="2.7" transform="rotate(351.4)"/><circle class="core" r="1.2"/></g><g class="fw" transform="translate(61.8 234.3)"><ellipse cx="0" cy="-2.3" rx="1.9" ry="2.3" transform="rotate(44.5)"/><ellipse cx="0" cy="-2.3" rx="1.9" ry="2.3" transform="rotate(116.5)"/><ellipse cx="0" cy="-2.3" rx="1.9" ry="2.3" transform="rotate(188.5)"/><ellipse cx="0" cy="-2.3" rx="1.9" ry="2.3" transform="rotate(260.5)"/><ellipse cx="0" cy="-2.3" rx="1.9" ry="2.3" transform="rotate(332.5)"/><circle class="core" r="1.1"/></g><g class="fw" transform="translate(61.9 232.1)"><ellipse cx="0" cy="-3.3" rx="2.7" ry="3.3" transform="rotate(21.6)"/><ellipse cx="0" cy="-3.3" rx="2.7" ry="3.3" transform="rotate(93.6)"/><ellipse cx="0" cy="-3.3" rx="2.7" ry="3.3" transform="rotate(165.6)"/><ellipse cx="0" cy="-3.3" rx="2.7" ry="3.3" transform="rotate(237.6)"/><ellipse cx="0" cy="-3.3" rx="2.7" ry="3.3" transform="rotate(309.6)"/><circle class="core" r="1.5"/></g><g class="fw" transform="translate(-1.3 100.1)"><ellipse cx="0" cy="-2.4" rx="1.9" ry="2.4" transform="rotate(8.2)"/><ellipse cx="0" cy="-2.4" rx="1.9" ry="2.4" transform="rotate(80.2)"/><ellipse cx="0" cy="-2.4" rx="1.9" ry="2.4" transform="rotate(152.2)"/><ellipse cx="0" cy="-2.4" rx="1.9" ry="2.4" transform="rotate(224.2)"/><ellipse cx="0" cy="-2.4" rx="1.9" ry="2.4" transform="rotate(296.2)"/><circle class="core" r="1.1"/></g><g class="fw" transform="translate(22.3 94.8)"><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(57.1)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(129.1)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(201.1)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(273.1)"/><ellipse cx="0" cy="-2.5" rx="2" ry="2.5" transform="rotate(345.1)"/><circle class="core" r="1.1"/></g><g class="fw" transform="translate(26.7 120.8)"><ellipse cx="0" cy="-3.7" rx="3" ry="3.7" transform="rotate(38.3)"/><ellipse cx="0" cy="-3.7" rx="3" ry="3.7" transform="rotate(110.3)"/><ellipse cx="0" cy="-3.7" rx="3" ry="3.7" transform="rotate(182.3)"/><ellipse cx="0" cy="-3.7" rx="3" ry="3.7" transform="rotate(254.3)"/><ellipse cx="0" cy="-3.7" rx="3" ry="3.7" transform="rotate(326.3)"/><circle class="core" r="1.7"/></g><g class="fw" transform="translate(145.6 7.2)"><ellipse cx="0" cy="-2.8" rx="2.2" ry="2.8" transform="rotate(12.7)"/><ellipse cx="0" cy="-2.8" rx="2.2" ry="2.8" transform="rotate(84.7)"/><ellipse cx="0" cy="-2.8" rx="2.2" ry="2.8" transform="rotate(156.7)"/><ellipse cx="0" cy="-2.8" rx="2.2" ry="2.8" transform="rotate(228.7)"/><ellipse cx="0" cy="-2.8" rx="2.2" ry="2.8" transform="rotate(300.7)"/><circle class="core" r="1.3"/></g><g class="fw" transform="translate(121 32.3)"><ellipse cx="0" cy="-2.5" rx="2.1" ry="2.5" transform="rotate(12.8)"/><ellipse cx="0" cy="-2.5" rx="2.1" ry="2.5" transform="rotate(84.8)"/><ellipse cx="0" cy="-2.5" rx="2.1" ry="2.5" transform="rotate(156.8)"/><ellipse cx="0" cy="-2.5" rx="2.1" ry="2.5" transform="rotate(228.8)"/><ellipse cx="0" cy="-2.5" rx="2.1" ry="2.5" transform="rotate(300.8)"/><circle class="core" r="1.1"/></g><g class="fw" transform="translate(144.5 20.9)"><ellipse cx="0" cy="-3.5" rx="2.8" ry="3.5" transform="rotate(34.4)"/><ellipse cx="0" cy="-3.5" rx="2.8" ry="3.5" transform="rotate(106.4)"/><ellipse cx="0" cy="-3.5" rx="2.8" ry="3.5" transform="rotate(178.4)"/><ellipse cx="0" cy="-3.5" rx="2.8" ry="3.5" transform="rotate(250.4)"/><ellipse cx="0" cy="-3.5" rx="2.8" ry="3.5" transform="rotate(322.4)"/><circle class="core" r="1.6"/></g></g></g></svg>
+</div>
+<canvas class="petals" aria-hidden="true"></canvas>
+<div class="scene-title">
+  <div class="eyebrow">Подготовка к экзамену · неофициальные конспекты</div>
+  <h1>Госпитальная терапия</h1>
+  <p class="motto">Пока цветёт сакура — всё возможно</p>
+</div>
+<button type="button" class="scene-pause" id="scene-pause" aria-pressed="false" aria-label="Остановить анимацию шапки" title="Остановить анимацию шапки">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-pause" d="M9 6v12M15 6v12"/><path class="i-play" d="M8 5.5v13l11-6.5z"/></svg>
+</button>
+</div>
 <div class="view" id="view-search" hidden><div class="wrap"><div class="eyebrow">Поиск</div><p class="s-count" id="s-count"></p><div id="s-results"></div></div></div>
-<div class="view" id="home"><section class="hero"><div class="hero-in">
-  <div class="hero-t">
-    <div class="ny-badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="t1" d="M12 3 6 11h3l-4 6h5v3h4v-3h5l-4-6h3z"/><circle class="t2" cx="12" cy="3" r="1.8"/><circle class="t3" cx="10" cy="13" r="1.1"/><circle class="t2" cx="14.5" cy="15" r="1.1"/></svg>С наступающим 2027 годом! Удачи на экзамене</div>
-    <div class="eyebrow">Подготовка к экзамену · неофициальные конспекты</div>
-    <h1>Госпитальная терапия</h1>
+<div class="view" id="home"><section class="intro"><div class="intro-in">
+  <div class="intro-t">
+    
     <p class="lead">Темы целиком: от нормальной анатомии и физиологии через механизмы болезни к дифференциальной диагностике, лечению и каркасам устных ответов. Основа — учебные пособия кафедры госпитальной терапии ИГМУ и действующие клинические рекомендации (КР) Министерства здравоохранения Российской Федерации.</p>
     <div class="howto">
       <a href="#questions"><b>Найти свой вопрос</b><span>Весь перечень с отметкой, что уже разобрано</span></a>
@@ -477,7 +645,7 @@ dl.abbr dt,dl.abbr dd{min-width:0;overflow-wrap:anywhere}
     <div class="xrow"><span class="xn">1</span><span class="xt">Кардиология</span><span class="xcells"><span class="xc" title="1.1. Симптоматические артериальные гипертонии, определение. Классификация. Показания для поиска симптоматических ар"></span><span class="xc" title="1.2. Гемодинамические артериальные гипертензии. Этиология, патогенез, клиника, диагно-стика, лечение."></span><span class="xc" title="1.3. Синдром и болезнь Иценко – Кушинга. Этиология, патогенез, клиника, диагностика."></span><span class="xc" title="1.4. Синдром Конна. Определение, патогенез, клиника, диагностика, лечение."></span><span class="xc" title="1.5. Феохромоцитома. Клиника, диагностика, лечение. Особенности купирования криза."></span><span class="xc" title="1.6. Реноваскулярные гипертонии. Этиология, патогенез, клиника, диагностика, лечение."></span><span class="xc" title="1.7. Ренопаренхиматозные артериальные гипертонии, клиника, диагностика, принципы лече-ния."></span><span class="xc" title="1.8. Комбинированная терапия артериальной гипертонии. Оптимальные комбинации препа-ратов."></span><span class="xc" title="1.9. Применение ингибиторов АПФ при артериальной гипертонии. Механизм действия, по-казания, противопоказания."></span><span class="xc" title="1.10. Экстрасистолия. Этиология, клиника, ЭКГ-диагностика, лечение."></span><span class="xc" title="1.11. Лечение экстрасистолии. Показания к антиаритмической терапии. Выбор препаратов. Оценка эффективности."></span><span class="xc" title="1.12. Фибрилляция предсердий. Этиология, классификация, гемодинамика, клиника, ЭКГ-диагностика."></span><span class="xc" title="1.13. Лечение фибрилляции предсердий. Медикаментозная кардиоверсия, показания, выбор препаратов для кардиоверсии и п"></span><span class="xc" title="1.14. Лечение фибрилляции предсердий. Выбор тактики при хронической форме. Профилак-тика тромбоэмболических осложнен"></span><span class="xc" title="1.15. Контроль ЧСС при фибрилляции предсердий. Выбор препаратов. Оценка эффективно-сти."></span><span class="xc" title="1.16. Трепетание предсердий. Этиология, гемодинамика, клиника, диагностика, лечение."></span><span class="xc" title="1.17. Фибрилляция желудочков. Этиология, клиника, ЭКГ-диагностика, лечение, профилакти-ка."></span><a class="xc on" href="#bradikardii-q118" title="1.18. Наджелудочковые блокады (сино-атриальная, атрио-вентрикулярные). Этиология, ЭКГ-диагностика, клиника, лечение." aria-label="1.18. Наджелудочковые блокады (сино-атриальная, атрио-вентрикулярные). Этиология, ЭКГ-диагностика, клиника, лечение."></a><span class="xc" title="1.19. Нарушения внутрижелудочковой проводимости. Этиология, клиника, ЭКГдиагностика."></span><a class="xc on" href="#bradikardii-q120" title="1.20. Полная атриовентрикулярная блокада. Классификация. Этиология, клиника, ЭКГ диа-гностика" aria-label="1.20. Полная атриовентрикулярная блокада. Классификация. Этиология, клиника, ЭКГ диа-гностика"></a><a class="xc on" href="#bradikardii-q121" title="1.21. Лечебная тактика при нарушениях проводимости." aria-label="1.21. Лечебная тактика при нарушениях проводимости."></a><a class="xc on" href="#tahikardii-q122" title="1.22. Пароксизмальные суправентрикулярные тахикардии. Этиология, нарушения гемодина-мики, клиника, ЭКГ-диагностика, " aria-label="1.22. Пароксизмальные суправентрикулярные тахикардии. Этиология, нарушения гемодина-мики, клиника, ЭКГ-диагностика, "></a><a class="xc on" href="#tahikardii-q123" title="1.23. Тактика ведения больных при наджелудочковых пароксизмальных тахикардиях." aria-label="1.23. Тактика ведения больных при наджелудочковых пароксизмальных тахикардиях."></a><a class="xc on" href="#tahikardii-q124" title="1.24. Пароксизмальные желудочковые тахикардии. Этиология, нарушения гемодинамики, клиника, ЭКГ-диагностика." aria-label="1.24. Пароксизмальные желудочковые тахикардии. Этиология, нарушения гемодинамики, клиника, ЭКГ-диагностика."></a><a class="xc on" href="#tahikardii-q125" title="1.25. Лечение желудочковой пароксизмальной тахикардии. Купирование приступа. Профи-лактика." aria-label="1.25. Лечение желудочковой пароксизмальной тахикардии. Купирование приступа. Профи-лактика."></a><a class="xc on" href="#tahikardii-q126" title="1.26. Неотложная терапия при желудочковой пароксизмальной тахикардии." aria-label="1.26. Неотложная терапия при желудочковой пароксизмальной тахикардии."></a><span class="xc" title="1.27. Кардиомиопатии. Определение, классификация. Нарушения гемодинамики при идиопа-тическом гипертрофическом субаор"></span><span class="xc" title="1.28. Кардиомиопатии. Механизмы развития сердечной недостаточности при дилатационной и гипертрофической кардиомиопат"></span><span class="xc" title="1.29. Дилатационная кардиомиопатия. Нарушения гемодинамики. Клиника, диагностика, ле-чение."></span><span class="xc" title="1.30. Лечение дилатационной кардиомиопатии."></span><span class="xc" title="1.31. Лечение обструктивной гипертрофической кардиомиопатии."></span><span class="xc" title="1.32. Хроническая сердечная недостаточность. Классификация. Клиника и методы диагности-ки левожелудочковой и правоже"></span><span class="xc" title="1.33. Хроническое легочное сердце. Этиология, патогенез, классификация. Клиника, диагно-стика."></span><span class="xc" title="1.34. Лечение хронической сердечной недостаточности."></span><span class="xc" title="1.35. Коарктация аорты. Нарушения гемодинамики. Клиника, диагностика, лечение."></span><span class="xc" title="1.36. Перикардит. Этиология. Клиника, нарушения гемодинамики, диагностика, лечение экс-судативного перикардита."></span><span class="xc" title="1.37. Пароксизмальная фибрилляция предсердий. Показания к экстренной кардиоверсии. Ан-тикоагулянтная терапия с целью"></span><span class="xc" title="1.38. Осложнения пароксизмальной фибрилляции предсердий (отек легких, аритмогенный шок). Тактика врача."></span><span class="xc" title="1.39. Оценка риска тромбоэмболических осложнений фибрилляции предсердий. Оценка риска кровотечения."></span><a class="xc on" href="#tahikardii-q140" title="1.40. Осложнения пароксизмальных тахикардий и их лечение." aria-label="1.40. Осложнения пароксизмальных тахикардий и их лечение."></a><a class="xc on" href="#tahikardii-q141" title="1.41. Дифференциальный диагноз при тахикардии." aria-label="1.41. Дифференциальный диагноз при тахикардии."></a><a class="xc on" href="#bradikardii-q142" title="1.42. Дифференциальный диагноз при брадикардии." aria-label="1.42. Дифференциальный диагноз при брадикардии."></a><span class="xc" title="1.43. Дифференциальный диагноз гемодинамических артериальных гипертоний и гипертони-ческой болезни."></span><span class="xc" title="1.44. Дифференциальный диагноз эндокринных артериальных гипертоний и гипертонической болезни."></span><span class="xc" title="1.45. Дифференциальный диагноз реноваскулярных артериальных гипертоний и гипертониче-ской болезни."></span><span class="xc" title="1.46. Дифференциальный диагноз ренопаренхиматозных артериальных гипертоний и гипер-тонической болезни."></span><span class="xc" title="1.47. Дифференциальный диагноз при боли в грудной клетке. Критерии стенокардии. Класси-фикация стенокардии."></span><span class="xc" title="1.48. Острый коронарный синдром с подъемом сегмента ST: определение, клиника, диагно-стика"></span><span class="xc" title="1.49. Дифференциальный диагноз при остром коронарном синдроме с подъемом сегмента ST."></span><span class="xc" title="1.50. Лечение острого коронарного синдрома с подъемом сегмента ST. Реперфузионная тера-пия. Антитромботическая терап"></span><span class="xc" title="1.51. Острый коронарный синдром без подъема сегмента ST: определение, клиника, диагно-стика."></span><span class="xc" title="1.52. Лечение острого коронарного синдрома без подъема сегмента ST."></span><span class="xc" title="1.53. Тромболитическая терапия при ОКС: показания, противопоказания, препараты, оценка эффективности."></span><span class="xc" title="1.54. Шок при инфаркте миокарда. Дифференциальный диагноз. Лечение."></span><span class="xc" title="1.55. Отек легких, этиология, патогенез, клиника, диагностика, лечение."></span><span class="xc" title="1.56. Дифференциальный диагноз гипертрофической кардиомиопатии."></span></span><span class="xd"><b>11</b> / 56</span></div><div class="xrow"><span class="xn">2</span><span class="xt">Ревматология</span><span class="xcells"><span class="xc" title="2.1. Ревматоидный артрит. Этиология, патогенез, рабочая классификация, клиника."></span><span class="xc" title="2.2. Ревматоидный артрит. Критерии диагностики. Лечение."></span><span class="xc" title="2.3. Лечение ревматоидного артрита."></span><span class="xc" title="2.4. Подагра. Этиология, патогенез, клиника, диагностические критерии."></span><span class="xc" title="2.5. Лечение подагры."></span><span class="xc" title="2.6. Остеоартрит. Этиология, патогенез, клиника, диагностика. Диагностические критерии остеоартрита."></span><span class="xc" title="2.7. Лечение остеоартрита."></span><span class="xc" title="2.8. Понятие об ANCA-васкулитах. Принципы диагностики и лечения."></span><span class="xc" title="2.9. Системная красная волчанка. Этиология, патогенез, клиническая картина, диагностика, лечение"></span><span class="xc" title="2.10. Системная красная волчанка. Классификационные критерии СКВ (ELAR/ACR , 2019). Лечение СКВ."></span><span class="xc" title="2.11. Системная склеродермия. Этиология, патогенез, клиника, диагностика, лечение."></span><span class="xc" title="2.12. Дерматомиозит. Этиология, патогенез, клиника, диагностика, лечение."></span><span class="xc" title="2.13. Узелковый полиартериит. Этиология, патогенез, клиника, диагностика, лечение."></span><span class="xc" title="2.14. Неспецифический аортоартериит (болезнь Такаясу). Этиология, клиника, диагностика, лечение."></span><span class="xc" title="2.15. Применение глюкокортикостероидов при системных заболеваниях соединительной тка-ни. Показания, побочные эффекты"></span></span><span class="xd"><b>0</b> / 15</span></div><div class="xrow"><span class="xn">3</span><span class="xt">Гематология</span><span class="xcells"><span class="xc" title="3.1. Анемия, понятие и определение. Классификация анемий: клинико-патогенетическая, по цветовому показателю, по диа"></span><span class="xc" title="3.2. Витамин В12-дефицитная и фолиево-дефицитная анемии. Этиология, патогенез, клини-ка, диагностика."></span><span class="xc" title="3.3. Витамин В12-дефицитная и фолиево-дефицитная анемии. Дифференциальный диагноз, лечение."></span><span class="xc" title="3.4. Гемолитические анемии. Этиология, патогенез, классификация. Диагностика, лабора-торные признаки гемолиза."></span><span class="xc" title="3.5. Аутоиммунные гемолитические анемии. Этиология, патогенез, клиника, диагностика, лечение."></span><span class="xc" title="3.6. Лечение иммунного гемолитического криза."></span><span class="xc" title="3.7. Врожденная гемолитическая анемия (Минковского-Шоффара). Этиология, патогенез, клиника, осложнения, диагностика"></span><span class="xc" title="3.8. Дифференциальный диагноз при гемолитических анемиях."></span><span class="xc" title="3.9. Апластическая анемия. Этиология, патогенез, классификация (критерии степени тяже-сти, 2024), клиника, диагност"></span><span class="xc" title="3.10. Апластическая анемия. Дифференциальный диагноз. Роль трансплантации костного моз-га в лечении апластической ан"></span><span class="xc" title="3.11. Гемобластозы. Определение. Этиология, патогенез, классификация ВОЗ (2022)."></span><span class="xc" title="3.12. Острые лейкозы. Классификация ВОЗ (2022) острых лейкозов. Клинические синдромы, диагностика, дифференциальный "></span><span class="xc" title="3.13. Принципы и этапы лечения острых лейкозов."></span><span class="xc" title="3.14. Хронический миелолейкоз. Этиология, патогенез, фазы хронического миелолейкоза, клиника, диагностика, лечение."></span><span class="xc" title="3.15. Хронический миелолейкоз. Дифференциальный диагноз."></span><span class="xc" title="3.16. Хронический лимфолейкоз. Этиология, патогенез, классификация по J.L.Binet (1990), клиника, диагностика, лечени"></span><span class="xc" title="3.17. Хронический лимфолейкоз. Дифференциальный диагноз."></span><span class="xc" title="3.18. Истинная полицитемия. Этиология, патогенез, клиника, классификация по стадиям (2017), клиника, диагностика, ле"></span><span class="xc" title="3.19. Дифференциальный диагноз истинной полицитемии и вторичных эритроцитозов"></span><span class="xc" title="3.20. Множественная миелома. Этиология, патогенез, стадирование по Международной си-стеме стадирования (2005), клини"></span><span class="xc" title="3.21. Множественная миелома. Дифференциальный диагноз, лечение."></span><span class="xc" title="3.22. Геморрагические диатезы: классификация. Методы исследования при патологии гемо-стаза. Клинические типы кровото"></span><span class="xc" title="3.23. Геморрагические васкулит. Этиология, патогенез, клиника, осложнения, диагностика, лечение."></span><span class="xc" title="3.24. Иммунная тромбоцитопеническая пурпура. Этиология, патогенез, клиника, диагностика, лечение."></span><span class="xc" title="3.25. Гемофилия. Патогенез геморрагического синдрома. Клиника, диагностика, лечение, не-отложная терапия."></span><span class="xc" title="3.26. Болезнь Рандю – Ослера. Этиология, патогенез, клиника, диагностика, лечение."></span><span class="xc" title="3.27. Дифференциальный диагноз при геморрагических диатезах (иммунная тромбоцитопени-ческая пурпура, гемофилия, гемо"></span><span class="xc" title="3.28. Дифференциальный диагноз при лимфаденопатии."></span><span class="xc" title="3.29. Дифференциальный диагноз при спленомегалии."></span><span class="xc" title="3.30. ДВС-синдром. Этиология, патогенез, стадии (Лычёв В.Г., 1998), клиника, диагностика, лечение."></span></span><span class="xd"><b>0</b> / 30</span></div><div class="xrow"><span class="xn">4</span><span class="xt">Нефрология</span><span class="xcells"><span class="xc" title="4.1. Острый гломерулонефрит. Этиология, патогенез, варианты клинического течения, кли-ника, диагностика."></span><span class="xc" title="4.2. Лечение острого гломерулонефрита."></span><span class="xc" title="4.3. Хронический гломерулонефрит. Этиология, патогенез, клинические варианты, диагно-стика."></span><span class="xc" title="4.4. Лечение хронического гломерулонефрита."></span><span class="xc" title="4.5. Нефротический синдром. Этиология, патогенез. Клинические и лабораторные симптомы. Диагностика. Осложнения."></span><span class="xc" title="4.6. Лечение нефротического синдрома. Профилактика осложнений."></span><span class="xc" title="4.7. Амилоидоз почек. Классификация, клиника, диагностика, лечение."></span><span class="xc" title="4.8. Хроническая почечная недостаточность (ХБП 3-5 стадии). Этиология, патогенез, клини-ка, диагностика. Понятие о "></span><span class="xc" title="4.9. Хроническая болезнь почек. Определение. Стадии хронической болезни почек. Принци-пы лечения пациентов с ХБП ра"></span><span class="xc" title="4.10. Быстропрогрессирующий (полулунный) гломерулонефрит. Патогенез, клиника, диагно-стика, лечение."></span><span class="xc" title="4.11. Дифференциальный диагноз при мочевом синдроме."></span><span class="xc" title="4.12. Дифференциальный диагноз при отечном синдроме (нефритические отеки, нефротиче-ский синдром, отеки при недостат"></span><span class="xc" title="4.13. Острое почечное повреждение. Патогенетические варианты: преренальное, ренальное, постренальное. Диагностика. С"></span></span><span class="xd"><b>0</b> / 13</span></div><div class="xrow"><span class="xn">5</span><span class="xt">Гастроэнтерология</span><span class="xcells"><span class="xc" title="5.1. Дифференциальная диагностика при синдроме гепатомегалии. Хронические гепатиты: Лос-Анжелесская классификация, "></span><span class="xc" title="5.2. Лечение хронических гепатитов (этиотропное, патогенетическое, симптоматическое)."></span><span class="xc" title="5.3. Дифференциальная диагностика при гепатолиенальном синдроме. Цирроз печени: ос-новные клинические проявления."></span><span class="xc" title="5.4. Диагностика цирроза печени по лабораторным и инструментальным данным."></span><span class="xc" title="5.5. Лечение цирроза печени и его осложнений (асцит, кровотечение из ВРВП, печеночная энцефалопатия)."></span><span class="xc" title="5.6. Дифференциальная диагностика при синдроме желтухи. Надпеченочные, печеночные и подпеченочные желтухи. Синдром "></span><span class="xc" title="5.7. Дифференциальная диагностика при синдроме кишечной диспепсии. Синдром раздра-женного кишечника, язвенный колит"></span><span class="xc" title="5.8. Дифференциальная диагностика при синдроме кишечной диспепсии. Антибиотикоассо-циированная диарея и псевдомембр"></span></span><span class="xd"><b>0</b> / 8</span></div><div class="xrow"><span class="xn">6</span><span class="xt">Пульмонология</span><span class="xcells"><span class="xc" title="6.1. Внебольничные пневмонии. Этиология, патогенез, классификация, клиника, диагности-ка, лечение."></span><span class="xc" title="6.2. Критерии диагностики тяжелой внебольничной пневмонии, дифференциальный диагноз, лечение."></span><span class="xc" title="6.3. Дифференциальный диагноз при синдроме легочного инфильтрата (пневмонии, инфиль-тративный туберкулез, инфаркт-п"></span><span class="xc" title="6.4. Хроническая обструктивная болезнь легких. Этиология, патогенез, классификация, кли-ника."></span><span class="xc" title="6.5. Хроническая обструктивная болезнь легких. Критерии диагностики (клинические, функ-циональные), дифференциальны"></span><span class="xc" title="6.6. Стратегия лечения хронической обструктивной болезни легких стабильного течения и при обострении."></span><span class="xc" title="6.7. Определение понятия «легочная диссеминация». Классификация, общие принципы диа-гностики."></span></span><span class="xd"><b>0</b> / 7</span></div><div class="xrow"><span class="xn">7</span><span class="xt">Аллергология</span><span class="xcells"><span class="xc" title="7.1. Бронхиальная астма, этиология, патогенез, клиника, классификация, принципы лечения."></span><span class="xc" title="7.2. Бронхиальная астма атопическая форма: этиология, патогенез, клиника."></span><span class="xc" title="7.3. Бронхиальная астма неаллергическая форма: этиология, патогенез, клиника."></span><span class="xc" title="7.4. Бронхиальная астма: принципы ступенчатой терапии (ингаляционные ГКС, антилей-котриеновые препараты, бронхолити"></span><span class="xc" title="7.5. Бронхиальная астма: оказание экстренной помощи (бронхолитики, глюкокортикостерои-ды, способы доставки)."></span><span class="xc" title="7.6. Дифференциальный диагноз анафилактического шока с другими видами шока."></span><span class="xc" title="7.7. Анафилактический шок, этиология, клиника, лечение, профилактика первичная и вто-ричная."></span></span><span class="xd"><b>0</b> / 7</span></div><div class="xrow"><span class="xn">8</span><span class="xt">Военно-полевая терапия</span><span class="xcells"><span class="xc" title="8.1. Поражающие факторы воздействия взрывной волны, механизм образования острых син-дромов, методы лечения."></span><span class="xc" title="8.2. Синдром длительного сдавления: периоды, клинические проявления на различных ста-диях периода декомпрессии, пат"></span><span class="xc" title="8.3. Последовательность действий при освобождении конечности из завала, неотложная по-мощь при синдроме длительного"></span><span class="xc" title="8.4. Острая лучевая болезнь, типичная (костномозговая) форма: определение, классифика-ция. Начальные периоды ОЛБ (п"></span><span class="xc" title="8.5. Острая лучевая болезнь, типичная (костномозговая) форма: периоды разгара и восста-новления: основные клиническ"></span><span class="xc" title="8.6. Хроническая лучевая болезнь: механизм развития, основные клинические проявления, диагностика, принципы терапии"></span></span><span class="xd"><b>0</b> / 6</span></div>
     <div class="xleg"><span><i class="xc on"></i>разобран, нажмите, чтобы открыть</span><span><i class="xc"></i>пока нет</span></div>
   </div>
-</div><svg class="trace" viewBox="0 0 1800 44" preserveAspectRatio="xMinYMid slice" aria-hidden="true"><path d="M0 30l20 0q6 -7 12 0l10 0l3 3l5 -24l5 30l4 -9l14 0q9 -11 18 0l59 0l20 0q6 -7 12 0l10 0l3 3l5 -24l5 30l4 -9l14 0q9 -11 18 0l59 0l20 0q6 -7 12 0l10 0l3 3l5 -24l5 30l4 -9l14 0q9 -11 18 0l59 0l20 0q6 -7 12 0l10 0l3 3l5 -24l5 30l4 -9l14 0q9 -11 18 0l59 0l20 0q6 -7 12 0l10 0l3 3l5 -24l5 30l4 -9l14 0q9 -11 18 0l59 0l20 0q6 -7 12 0l10 0l3 3l5 -24l5 30l4 -9l14 0q9 -11 18 0l59 0l20 0q6 -7 12 0l10 0l3 3l5 -24l5 30l4 -9l14 0q9 -11 18 0l59 0l20 0q6 -7 12 0l10 0l3 3l5 -24l5 30l4 -9l14 0q9 -11 18 0l59 0l20 0q6 -7 12 0l10 0l3 3l5 -24l5 30l4 -9l14 0q9 -11 18 0l59 0l20 0q6 -7 12 0l10 0l3 3l5 -24l5 30l4 -9l14 0q9 -11 18 0l59 0l20 0q6 -7 12 0l10 0l3 3l5 -24l5 30l4 -9l14 0q9 -11 18 0l59 0l20 0q6 -7 12 0l10 0l3 3l5 -24l5 30l4 -9l14 0q9 -11 18 0l59 0"/></svg></section>
+</div></section>
 <div class="wrap home">
   <h2 class="grp">Раздел 1: Кардиология</h2><div class="tlist"><article class="tcard" data-slug="tahikardii"><span class="ticon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.500S3.5 15.5 3.5 9.300C3.5 6.5 5.7 4.5 8.2 4.500c1.6 0 3 .9 3.8 2.2.8-1.3 2.2-2.2 3.8-2.2 2.5 0 4.7 2 4.7 4.8 0 6.2-8.5 11.2-8.5 11.200Z"/><path d="M4 12h2l1-2.500L8.500 14 10 9.500 11.500 14 13 9.500 14.500 14 16 12h4"/></svg></span><div class="tbody"><a class="trow" href="#tahikardii"><span class="tq">Вопросы 1.41, 1.22–1.26, 1.40</span><span class="tt2">Тахикардии: от механизмов к дифференциальной диагностике и лечению</span><span class="tl">Почему частое сердце работает хуже; три механизма тахикардии и как работает круг повторного входа; как по осмотру, ЭКГ, вагусной пробе и АТФ отличить синусовую тахикардию, НЖТ, трепетание, фибрилляцию и желудочковую тахикардию; что делать при узком и широком QRS, кому аблация и кардиовертер-дефибриллятор.</span></a><div class="hblocks" aria-label="Блоки темы"><a href="#tahikardii-blk-norma">Норма</a><a href="#tahikardii-blk-mehanizmy">Механизмы и виды</a><a href="#tahikardii-blk-difdiagnoz">Дифдиагностика</a><a href="#tahikardii-blk-lechenie">Лечение и осложнения</a><a href="#tahikardii-blk-voprosy">Вопросы и задачи</a><a href="#tahikardii-blk-spravka">Справка</a></div><span class="tm">13 карточек · обновлено 19.11.2026</span></div></article><article class="tcard" data-slug="bradikardii"><span class="ticon"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.500S3.5 15.5 3.5 9.300C3.5 6.5 5.7 4.5 8.2 4.500c1.6 0 3 .9 3.8 2.2.8-1.3 2.2-2.2 3.8-2.2 2.5 0 4.7 2 4.7 4.8 0 6.2-8.5 11.2-8.5 11.200Z"/><path d="M4 12h5l1-2 1.500 4L13 12h7"/></svg></span><div class="tbody"><a class="trow" href="#bradikardii"><span class="tq">Вопросы 1.42, 1.18, 1.20, 1.21</span><span class="tt2">Брадикардии: от работы синусового узла к дифференциальной диагностике и лечению</span><span class="tl">Как синусовый узел задаёт ритм и что происходит, когда он слабеет или импульс застревает по дороге; семь причин редкого ритма и как различить их у постели больного и по ЭКГ; какое заболевание искать; когда хватит отмены лекарства, а когда нужен атропин, временная или постоянная стимуляция.</span></a><div class="hblocks" aria-label="Блоки темы"><a href="#bradikardii-blk-norma">Норма</a><a href="#bradikardii-blk-mehanizmy">Механизмы</a><a href="#bradikardii-blk-difdiagnoz">Дифдиагностика</a><a href="#bradikardii-blk-lechenie">Лечение и осложнения</a><a href="#bradikardii-blk-voprosy">Вопросы и задачи</a><a href="#bradikardii-blk-spravka">Справка</a></div><span class="tm">8 карточек · обновлено 19.11.2026</span></div></article></div>
   <p class="foot">2 темы · обновлено 19.11.2026</p>
@@ -2332,121 +2500,144 @@ dl.abbr dt,dl.abbr dd{min-width:0;overflow-wrap:anywhere}
   }, function () {});
 })();
 
-/* Новогоднее оформление: гирлянда под панелью и снег с кнопкой выключения. */
+
+/* Оформление «Сакура»: лепестки с дерева, узкая шапка вне главной, кнопка паузы. */
 (function () {
-  var bar = document.querySelector(".bar");
-  if (!bar) return;
-  var NS = "http://www.w3.org/2000/svg";
+  var mh = document.getElementById("masthead");
+  if (!mh) return;
+  var cv = mh.querySelector(".petals"), tree = mh.querySelector(".tree"), home = document.getElementById("home");
+  var btn = document.getElementById("scene-pause");
+  var ctx = cv.getContext && cv.getContext("2d");
+  var reduce = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : { matches: false };
 
-  // ---------- гирлянда ----------
-  var g = document.createElement("div");
-  g.className = "garland";
-  g.setAttribute("aria-hidden", "true");
-  bar.appendChild(g);
-  var lastW = 0;
-  function drawGarland() {
-    var w = Math.round(g.clientWidth || window.innerWidth);
-    if (!w || w === lastW) return;
-    lastW = w;
-    var seg = w < 600 ? 72 : 96, n = Math.ceil(w / seg), d = "M0 1.5", bulbs = "", k = 0;
-    for (var i = 0; i < n; i++) {
-      var x0 = i * seg;
-      d += " Q" + (x0 + seg / 2) + " 15 " + (x0 + seg) + " 1.5";
-      [0.25, 0.5, 0.75].forEach(function (t) {
-        var x = x0 + seg * t, y = (1 - t) * (1 - t) * 1.5 + 2 * (1 - t) * t * 15 + t * t * 1.5;
-        var c = k % 4, dl = (k * 3) % 4;
-        bulbs += '<rect class="cap" x="' + (x - 1.6).toFixed(1) + '" y="' + y.toFixed(1) + '" width="3.2" height="2.6" rx=".6"/>' +
-          '<ellipse class="b c' + c + " d" + dl + '" cx="' + x.toFixed(1) + '" cy="' + (y + 6.6).toFixed(1) + '" rx="3.1" ry="4.4"/>';
-        k++;
-      });
-    }
-    g.innerHTML = '<svg xmlns="' + NS + '" viewBox="0 0 ' + w + ' 24" preserveAspectRatio="none"><path class="w" d="' + d + '"/>' + bulbs + "</svg>";
-  }
-  drawGarland();
-  window.addEventListener("resize", drawGarland);
-
-  // ---------- снег ----------
-  var KEY = "pt-snow";
-  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var saved = null;
-  try { saved = localStorage.getItem(KEY); } catch (e) { saved = null; }
-  var on = saved === null ? !reduce : saved === "1";
-
-  var btn = document.createElement("button");
-  btn.type = "button";
-  btn.className = "ny-btn";
-  btn.title = "Включить или выключить снег";
-  btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9 4l3 2 3-2M9 20l3-2 3 2"/></svg><span>Снег</span>';
-  var slot = bar.querySelector(".bar-nav");
-  if (slot && slot.parentNode) slot.parentNode.insertBefore(btn, slot.nextSibling); else bar.appendChild(btn);
-
-  var cv = null, ctx = null, flakes = [], raf = 0, W = 0, H = 0, dpr = 1, color = "", frame = 0;
-  function readColor() {
-    color = getComputedStyle(document.documentElement).getPropertyValue("--snow").trim() || "rgba(150,170,190,.6)";
-  }
-  function size() {
-    if (!cv) return;
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = window.innerWidth; H = window.innerHeight;
-    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    var want = Math.round(Math.min(130, Math.max(36, W * H / 10000)));
-    while (flakes.length < want) flakes.push(make(true));
-    flakes.length = want;
-  }
-  function make(anywhere) {
-    var r = 1.1 + Math.random() * 2.3;
-    return { x: Math.random() * W, y: anywhere ? Math.random() * H : -6, r: r,
-             vy: 0.2 + r * 0.25 + Math.random() * 0.2, ph: Math.random() * 6.28, sw: 0.3 + Math.random() * 0.6 };
-  }
-  function tick() {
-    raf = 0;
-    if (!on || document.hidden) return;
-    if (frame++ % 90 === 0) readColor();
-    ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = color;
-    ctx.beginPath();
-    for (var i = 0; i < flakes.length; i++) {
-      var f = flakes[i];
-      f.ph += 0.012;
-      f.y += f.vy;
-      f.x += Math.sin(f.ph) * f.sw * 0.5;
-      if (f.y > H + 6 || f.x < -10 || f.x > W + 10) { flakes[i] = make(false); continue; }
-      ctx.moveTo(f.x + f.r, f.y);
-      ctx.arc(f.x, f.y, f.r, 0, 6.2832);
-    }
-    ctx.fill();
-    raf = requestAnimationFrame(tick);
-  }
-  function start() {
-    if (!cv) {
-      cv = document.createElement("canvas");
-      cv.className = "ny-snow";
-      cv.setAttribute("aria-hidden", "true");
-      document.body.appendChild(cv);
-      ctx = cv.getContext("2d");
-      window.addEventListener("resize", size);
-    }
-    cv.hidden = false;
-    readColor(); size();
-    if (!raf) raf = requestAnimationFrame(tick);
-  }
-  function stop() {
-    if (raf) cancelAnimationFrame(raf);
-    raf = 0;
-    if (cv) { ctx.clearRect(0, 0, W, H); cv.hidden = true; }
-  }
-  function apply() {
-    btn.setAttribute("aria-pressed", on ? "true" : "false");
-    if (on) start(); else stop();
+  // ---------- пауза: запоминается в браузере; при «уменьшить движение» по умолчанию стоит ----------
+  var stored = null;
+  try { stored = localStorage.getItem("sakura-paused"); } catch (e) {}
+  var paused = stored === null ? !!reduce.matches : stored === "1";
+  function applyPause() {
+    mh.classList.toggle("paused", paused);
+    btn.setAttribute("aria-pressed", paused ? "true" : "false");
+    var t = paused ? "Запустить анимацию шапки" : "Остановить анимацию шапки";
+    btn.setAttribute("aria-label", t);
+    btn.title = t;
+    loop();
   }
   btn.addEventListener("click", function () {
-    on = !on;
-    try { localStorage.setItem(KEY, on ? "1" : "0"); } catch (e) { /* без сохранения */ }
-    apply();
+    paused = !paused;
+    try { localStorage.setItem("sakura-paused", paused ? "1" : "0"); } catch (e) {}
+    applyPause();
   });
-  document.addEventListener("visibilitychange", function () { if (on && !document.hidden && !raf && cv) raf = requestAnimationFrame(tick); });
-  apply();
+
+  // ---------- высокая шапка только на главной ----------
+  function syncMode() {
+    var slim = !home || home.hidden;
+    if (mh.classList.contains("slim") !== slim) { mh.classList.toggle("slim", slim); petals.length = 0; seed(); }
+  }
+  if (home && window.MutationObserver) new MutationObserver(syncMode).observe(home, { attributes: true, attributeFilter: ["hidden"] });
+
+  // ---------- лепестки ----------
+  var petals = [], W = 0, H = 0, dpr = 1, colors = [], raf = 0, last = 0, onScreen = true;
+  function readColors() {
+    var cs = getComputedStyle(mh);
+    colors = [1, 2, 3, 4].map(function (i) { return cs.getPropertyValue("--petal" + i).trim() || "#f4b6cc"; });
+  }
+  function size() {
+    var r = mh.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = r.width; H = r.height;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    draw();
+  }
+  function target() {
+    var slim = mh.classList.contains("slim");
+    return W < 600 ? (slim ? 6 : 14) : (slim ? 12 : 30);
+  }
+  function crown() {  // где на экране крона дерева
+    var t = tree.getBoundingClientRect(), m = mh.getBoundingClientRect();
+    return { x: t.left - m.left, y: Math.max(0, t.top - m.top), w: t.width, h: t.height };
+  }
+  function spawn(anywhere) {
+    var c = crown(), r = Math.random;
+    var p = {
+      x: c.x + c.w * (0.08 + 0.85 * r()), y: c.y + c.h * (0.04 + 0.4 * r()),
+      s: 4 + r() * 4.5, vy: 16 + r() * 22, wind: 10 + r() * 22, sway: 12 + r() * 22,
+      ph: r() * 6.28, fr: 0.6 + r() * 1.1, rot: r() * 6.28, vr: (r() - 0.5) * 2.4,
+      flip: r() * 6.28, vf: 1.2 + r() * 2.2, c: colors[Math.floor(r() * colors.length)], a: 0.75 + r() * 0.25
+    };
+    if (anywhere) { p.x = r() * W * 0.9; p.y = r() * H; }
+    return p;
+  }
+  function seed() {
+    readColors();
+    var n = target();
+    while (petals.length < n) petals.push(spawn(true));
+  }
+  function petalPath(s) {  // лепесток сакуры с выемкой на кончике
+    ctx.beginPath();
+    ctx.moveTo(0, -0.7 * s);
+    ctx.lineTo(0.24 * s, -s);
+    ctx.bezierCurveTo(0.78 * s, -0.84 * s, 0.62 * s, 0.56 * s, 0, s);
+    ctx.bezierCurveTo(-0.62 * s, 0.56 * s, -0.78 * s, -0.84 * s, -0.24 * s, -s);
+    ctx.closePath();
+  }
+  function draw() {
+    if (!ctx) return;
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < petals.length; i++) {
+      var p = petals[i], fade = Math.max(0, Math.min(1, (H - p.y) / 40));
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.scale(1, 0.35 + 0.65 * Math.abs(Math.cos(p.flip)));
+      ctx.globalAlpha = p.a * fade;
+      ctx.fillStyle = p.c;
+      petalPath(p.s);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+  function step(now) {
+    raf = 0;
+    if (!running()) return;
+    var dt = Math.min(0.05, (now - (last || now)) / 1000);
+    last = now;
+    var t = now / 1000, n = target();
+    for (var i = petals.length - 1; i >= 0; i--) {
+      var p = petals[i];
+      p.y += p.vy * dt;
+      p.x += (p.wind + Math.sin(t * p.fr + p.ph) * p.sway) * dt;
+      p.rot += p.vr * dt;
+      p.flip += p.vf * dt;
+      if (p.y > H + 12 || p.x > W + 20) {
+        if (petals.length > n) petals.splice(i, 1); else petals[i] = spawn(false);
+      }
+    }
+    while (petals.length < n) petals.push(spawn(false));
+    draw();
+    raf = requestAnimationFrame(step);
+  }
+  function running() { return !!ctx && !paused && onScreen && !document.hidden; }
+  function loop() {
+    if (running() && !raf) { last = 0; raf = requestAnimationFrame(step); }
+  }
+
+  if (window.IntersectionObserver) {
+    new IntersectionObserver(function (es) { onScreen = es[0].isIntersecting; loop(); }).observe(mh);
+  }
+  document.addEventListener("visibilitychange", loop);
+  if (window.ResizeObserver) new ResizeObserver(size).observe(mh); else window.addEventListener("resize", size);
+  if (window.matchMedia) {
+    var dark = window.matchMedia("(prefers-color-scheme: dark)");
+    var re = function () { readColors(); petals.forEach(function (p) { p.c = colors[Math.floor(Math.random() * colors.length)]; }); draw(); };
+    if (dark.addEventListener) dark.addEventListener("change", re);
+  }
+
+  syncMode();
+  size();
+  seed();
+  draw();
+  applyPause();
 })();
 
 </script>
