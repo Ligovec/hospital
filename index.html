@@ -2175,6 +2175,27 @@ figure.hfig svg.ecg{max-width:var(--mw,none)!important;margin-inline:auto}
 
 .hp .hp-zoom .hp-art{overflow-x:auto;max-width:100%;padding:8px}.hp .hp-zoom svg{min-width:610px}.hp .hp-figure:not(.hp-zoom) .hp-art{overflow:visible}
 @media(max-width:400px){.hp .hp-figure .hp-bar button{width:auto;flex:1 1 120px;font-size:14px;padding:9px 10px}}
+
+/* Длинные названия этапов должны оставаться внутри карточек при любом масштабе. */
+.hp .hp-stepchain{grid-template-columns:repeat(2,minmax(0,1fr))}
+.hp .hp-stepchain>div{min-width:0;overflow-wrap:anywhere}
+.hp .hp-stepchain>div:after{display:none}
+.hp .hp-stepchain b,.hp .hp-stepchain small{overflow-wrap:anywhere;hyphens:auto}
+@media(min-width:1100px){.hp .hp-stepchain{grid-template-columns:repeat(4,minmax(0,1fr))}.hp .hp-stepchain>div:not(:last-child):after{display:block}}
+@media(max-width:700px){.hp .hp-stepchain{grid-template-columns:1fr}}
+
+.hp .hp-hbvmap{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:16px 0}
+.hp .hp-hbvmap>div{min-width:0;padding:14px;border:1px solid var(--line);border-top:4px solid var(--hp-blue);border-radius:12px;background:var(--paper);overflow-wrap:anywhere}
+.hp .hp-hbvmap>div:nth-child(2){border-top-color:var(--hp-purple)}
+.hp .hp-hbvmap>div:nth-child(4){border-top-color:var(--hp-red)}
+.hp .hp-hbvmap b,.hp .hp-hbvmap small{display:block;overflow-wrap:anywhere;hyphens:auto}
+.hp .hp-hbvmap b{line-height:1.35;margin-bottom:8px}
+.hp .hp-hbvmap small{line-height:1.5}
+.hp .hp-hbvmap .hp-active{outline:3px solid var(--c1);outline-offset:2px}
+.hp .hp-hbvmap .hp-zone{font-size:12px;color:var(--ink-2);letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px}
+@media(min-width:1101px){.hp .hp-hbvmap>div{position:relative}.hp .hp-hbvmap>div:not(:last-child):after{content:'→';position:absolute;right:-15px;top:45%;font-size:20px;color:var(--ink);z-index:2;background:var(--hp-soft)}}
+@media(max-width:1100px){.hp .hp-hbvmap{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.hp .hp-hbvmap{grid-template-columns:1fr}}
 </style><div class="hp"><figure class="hp-figure" data-hp-figure="anatomy"><p>Интерактивная схема загружается при включённом JavaScript.</p></figure></div>
 <p>Печень лежит преимущественно в правом подреберье под диафрагмой, распространяется в эпигастрий и частично в левое подреберье. Верхняя граница зависит от положения диафрагмы и дыхания, поэтому пальпируемый край ниже рёберной дуги не равен увеличению органа. При эмфиземе печень может быть смещена вниз; при доле Риделя вытянут отдельный участок правой доли. Истинное увеличение подтверждают воспроизводимыми измерениями и оценкой объёма, а не одной координатой края.</p>
 <p>Диафрагмальная поверхность выпуклая; висцеральная несёт вдавления соседних органов и ворота печени. Справа и сзади соседствуют диафрагма, правая почка и надпочечник; снизу — двенадцатиперстная и ободочная кишка, желчный пузырь; слева — желудок. Из-за соседства боль и объёмное образование требуют различать печёночную и внепечёночную причины. Нижняя полая вена проходит в задней борозде, а печёночные вены впадают в неё, не проходя через ворота.</p>
@@ -2333,7 +2354,7 @@ figure.hfig svg.ecg{max-width:var(--mw,none)!important;margin-inline:auto}
 <p>Источник: Лабораторная диагностика при заболеваниях печени, ИГМУ, 2024; с. 30–45</p>
 <a class="blknext" href="#gepatomegaliya-blk-causes"><span>Следующий блок</span>Причины и лечение</a></section><section class="tblock" data-block="causes"><h2 class="qhead" id="gepatomegaliya-svi"><span class="ph">Часть VI</span>Причины и лечение</h2>
 <h2 id="gepatomegaliya-s21"><span class="n">21</span>Вирусные гепатиты: как понимать маркеры</h2>
-<div class="hp"><div class="hp-panel" data-hp-hbv><p>Интерпретатор маркеров гепатита B.</p></div></div>
+<div class="hp"><figure class="hp-figure" data-hp-figure="hbv"><p>Интерактивная схема загружается при включённом JavaScript.</p></figure></div><div class="hp"><div class="hp-panel" data-hp-hbv><p>Интерпретатор маркеров гепатита B.</p></div></div>
 <p>HAV — hepatitis A virus, вирус гепатита A — и HEV — hepatitis E virus, вирус гепатита E — преимущественно передаются энтерально. Гепатит A не хронизируется; HEV может персистировать у иммунокомпрометированных. Течение HEV при беременности может быть особенно тяжёлым в зависимости от генотипа и эпидемиологической ситуации. Острые формы подтверждают специфическими маркерами с учётом сроков и при необходимости молекулярным исследованием; отрицательный ранний серологический тест не всегда завершает поиск.</p>
 <p>HBV — hepatitis B virus, вирус гепатита B — содержит ДНК, но реплицируется через РНК-промежуточный продукт. После входа в гепатоцит формируется ковалентно замкнутая кольцевая ДНК (cccDNA, covalently closed circular DNA), с которой клеточная РНК-полимераза II синтезирует вирусные РНК. Обратная транскрипция происходит в нуклеокапсиде. Персистенция cccDNA объясняет, почему подавление ДНК препаратами не равно полному устранению вируса. Повреждение преимущественно иммунно-опосредованное; интеграция вирусной ДНК также участвует в канцерогенезе.</p>
 <p>HBsAg — поверхностный антиген HBV — свидетельствует о текущей инфекции, но не определяет фазу самостоятельно. Anti-HBs — антитела к поверхностному антигену — возникают после вакцинации или перенесённой инфекции. Anti-HBc total — суммарные антитела к ядерному антигену — указывают на естественный контакт, после одной вакцинации не образуются. Anti-HBc IgM поддерживают острую инфекцию, но могут выявляться при обострении хронической. HBeAg и anti-HBe отражают особенности репликационного фенотипа, а реальную активность репликации оценивают по количественной ДНК HBV. Персистенция HBsAg ≥6 месяцев поддерживает хроническую инфекцию.</p>
@@ -2928,11 +2949,25 @@ function imaging(mode){let b=`<rect x="55" y="33" width="500" height="255" rx="2
  if(mode==='ascites')b+=path('M62 144 Q34 287 205 294',C.blue,19);
  return [svg(b,'Авторская схема визуализационных признаков: '+mode,320),notes[mode],[]];
 }
+const hbvStages=[
+ ['Поверхность клетки','1. Вход','Вирус связывается с рецептором NTCP и проникает в гепатоцит.'],
+ ['Ядро','2. Сохранение матрицы','Вирусная ДНК достраивается до ковалентно замкнутой кольцевой ДНК (cccDNA, covalently closed circular DNA).'],
+ ['Ядро → цитоплазма','3. Синтез РНК и белков','РНК-полимераза клетки считывает cccDNA; образуются вирусные РНК и белки.'],
+ ['Нуклеокапсид','4. Обратная транскрипция','Внутри капсида вирусная полимераза синтезирует ДНК на матрице прегеномной РНК.'],
+ ['Цитоплазма → кровь','5. Сборка и выход','Часть капсидов пополняет ядерный резервуар; другие получают оболочку и выходят из клетки.']
+];
+function hbv(mode){
+ const targets=mode==='therapy'?[0,3]:[];
+ const cards=hbvStages.map(([zone,title,detail],i)=>`<div class="${targets.includes(i)?'hp-active':''}"><span class="hp-zone">${E(zone)}</span><b>${E(title)}</b><small>${E(detail)}</small></div>`).join('');
+ const note=mode==='therapy'?'Энтекавир и тенофовир подавляют вирусную полимеразу на этапе обратной транскрипции. Образование новых вирусных частиц уменьшается, однако ядерная cccDNA может сохраняться. Булевиртид перекрывает вход через натрий-таурохолатный котранспортирующий полипептид (NTCP, sodium taurocholate cotransporting polypeptide) и применяется при гепатите D по специальным показаниям.':'Проследите путь слева направо: клеточная РНК-полимераза делает РНК из cccDNA в ядре, а вирусная полимераза затем выполняет обратную транскрипцию внутри нуклеокапсида. Это разные ферменты и разные этапы.';
+ return [`<div class="hp-hbvmap">${cards}</div>`,note,[]];
+}
 const CONFIG={
  anatomy:{title:'Печень: структура и пути',fn:anatomy,items:[['surface','Поверхность'],['segments','Сегменты I–VIII'],['blood','Кровоснабжение'],['bile','Желчные пути']],source:'OpenStax §23.6; анатомическая карта сегментов — условная топология.'},
  lobule:{title:'Долька: кровь и желчь идут в разные стороны',fn:lobule,items:[['both','Оба потока'],['blood','Кровь'],['bile','Желчь'],['hypoxia','Гипоксия зоны 3'],['cell','Клетки и барьеры']],source:'AASLD, Normal Liver Histology 101, 2020.'},
  physiology:{title:'Нормальная функция → патология',fn:physiology,items:[['albumin','Белки'],['ammonia','Аммиак'],['glucose','Глюкоза'],['fat','Липиды'],['drugs','Биотрансформация']],source:'ИГМУ 2024, с. 7–25; фундаментальная физиология.'},
  bilirubin:{title:'Путь билирубина и место нарушения',fn:bilirubin,items:[['normal','Норма'],['hemolysis','Гемолиз'],['gilbert','Синдром Жильбера'],['hepatitis','Гепатит'],['obstruction','Обструкция']],source:'ИГМУ 2024, с. 26–29; Синапс, раздел желтух.'},
+ hbv:{title:'Жизненный цикл вируса гепатита B',fn:hbv,items:[['cycle','Пять этапов'],['therapy','Мишени лечения']],source:'Перерисовано по SYNAPSE, лекция 7, с. 8; лечение сверено с КР Минздрава России 900_1 и 673_2. Упрощённая авторская схема.'},
  tissue:{title:'Как меняется микроструктура',fn:tissue,items:[['normal','Норма'],['steatosis','Стеатоз'],['inflammation','Воспаление'],['congestion','Венозный застой'],['cholestasis','Холестаз'],['fibrosis','Фиброз'],['cirrhosis','Цирроз'],['a1at','Включения белка'],['iron','Железо']],source:'ИГМУ 2024; Синапс, с. 31, 35, 40, 42. Авторская схема, не гистологический препарат.'},
  clinical:{title:'Клинический атлас: признак и механизм',fn:clinical,items:[['jaundice','Желтуха'],['kf','Кольцо роговицы'],['palm','Пальмарная эритема'],['spider','Звёздочка'],['ascites','Асцит'],['collaterals','Коллатерали'],['nutmeg','Мускатная печень']],source:'ИГМУ 2024; Синапс, с. 34, 41–44. Собственные учебные иллюстрации, не фотографии пациентов.'},
  portal:{title:'Портальное давление, шунтирование и застой',fn:portal,items:[['normal','Норма'],['cirrhosis','Цирроз'],['tips','После TIPS'],['cardiac','Застой от сердца']],source:'КР Минздрава России 715_2; Baveno VIII 2026.'},
